@@ -116,7 +116,7 @@ export default function Gallery() {
             }}
             className="absolute inset-0"
           >
-            {/* Blurred cover backdrop — fills the full-bleed frame edge to edge
+            {/* Blurred cover backdrop - fills the full-bleed frame edge to edge
                 so there's never letterboxing, regardless of the source photo's
                 orientation or aspect ratio. */}
             <Image
@@ -128,7 +128,7 @@ export default function Gallery() {
               className="scale-110 object-cover opacity-70 blur-2xl"
             />
 
-            {/* Actual photo — object-contain so portrait and landscape shots
+            {/* Actual photo - object-contain so portrait and landscape shots
                 both display in full, uncropped, centered in the frame. */}
             <Image
               src={img.src}

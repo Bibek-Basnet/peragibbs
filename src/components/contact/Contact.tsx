@@ -6,7 +6,7 @@ type Role = "athlete" | "parent" | "";
 
 const STEPS = [
   { title: "Tell me about you", body: "A couple of details on where you're at and what you're chasing." },
-  { title: "I'll follow up personally", body: "No forms disappearing into a queue — you'll hear from me directly." },
+  { title: "I'll follow up personally", body: "No forms disappearing into a queue - you'll hear from me directly." },
   { title: "We book your first call", body: "A quick chat to map out the right program before anything's signed." },
 ];
 
@@ -56,7 +56,7 @@ export default function ContactForm() {
             </h2>
             <p className="mt-6 max-w-sm font-body text-base leading-relaxed text-grey">
               Tell me a bit about yourself and I&apos;ll follow up personally
-              to talk through the right path — whether that&apos;s you as
+              to talk through the right path - whether that&apos;s you as
               the athlete, or a parent getting things started.
             </p>
 
@@ -148,7 +148,7 @@ export default function ContactForm() {
 
             {status === "sent" && (
               <p className="font-body text-sm text-ink">
-                Thanks — I&apos;ll be in touch shortly.
+                Thanks - I&apos;ll be in touch shortly.
               </p>
             )}
             {status === "error" && (

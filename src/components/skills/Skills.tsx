@@ -14,7 +14,7 @@ const SKILLS = [
     tag: "Programming",
     title: "Strength & conditioning",
     description:
-      "Program design built on high-performance principles — periodised strength blocks adapted for developing athletes.",
+      "Program design built on high-performance principles - periodised strength blocks adapted for developing athletes.",
     highlights: [
       {
         title: "Periodised programming",
@@ -34,7 +34,7 @@ const SKILLS = [
     tag: "Technical",
     title: "Rugby skills development",
     description:
-      "Position-specific technical work — ball skills, contact technique, and game-understanding built through repetition.",
+      "Position-specific technical work - ball skills, contact technique, and game-understanding built through repetition.",
     highlights: [
       {
         title: "Contact technique",
@@ -94,7 +94,7 @@ const SKILLS = [
     tag: "Development",
     title: "Youth athlete development",
     description:
-      "Long-term athletic development frameworks — building physical literacy before chasing specialisation.",
+      "Long-term athletic development frameworks - building physical literacy before chasing specialisation.",
     highlights: [
       {
         title: "Long-term planning",
@@ -165,33 +165,39 @@ function SkillRow({
   return (
     <div
       ref={rowRef}
-      className="grid grid-cols-1 gap-8 border-b border-ink/10 py-12 last:border-0 md:grid-cols-[280px_1fr] md:gap-16 md:py-14"
+      className="grid grid-cols-1 gap-8 border-b border-ink/10 py-10 last:border-0 md:grid-cols-[280px_1fr] md:gap-16 md:py-12"
     >
-      {/* Left: identity */}
-      <div>
-        <p className="font-head text-xs font-semibold uppercase tracking-widest text-ember">
-          {skill.tag}
-        </p>
-
-        <h3 className="mt-3 font-head text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-          {skill.title}
-        </h3>
-
-        <p className="mt-4 font-body text-base leading-relaxed text-grey">
-          {skill.description}
-        </p>
+      {/* Left: identity with subtle number */}
+      <div className="flex items-start gap-4">
+        <span className="font-head text-sm font-semibold text-ember/20">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <div>
+          <p className="font-head text-xs font-semibold uppercase tracking-widest text-ember">
+            {skill.tag}
+          </p>
+          <h3 className="mt-2 font-head text-xl font-semibold tracking-tight text-ink md:text-2xl">
+            {skill.title}
+          </h3>
+          <p className="mt-2 font-body text-sm leading-relaxed text-grey md:text-base">
+            {skill.description}
+          </p>
+        </div>
       </div>
 
-      {/* Right: highlights as a plain divided list, no cards, no icons */}
-      <ul ref={listRef} className="divide-y divide-ink/10">
+      {/* Right: highlights with subtle cards */}
+      <ul ref={listRef} className="space-y-2">
         {skill.highlights.map((item) => (
-          <li key={item.title} className="flex gap-4 py-5 first:pt-0 last:pb-0">
-            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ember" />
+          <li
+            key={item.title}
+            className="flex items-start gap-4 rounded-lg border border-ink/5 px-4 py-3 transition-all duration-200 hover:border-ember/20 hover:bg-ember/[0.02]"
+          >
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ember/40" />
             <div>
-              <p className="font-head text-sm font-semibold text-ink">
+              <p className="font-head text-sm font-medium text-ink">
                 {item.title}
               </p>
-              <p className="mt-1 font-body text-sm leading-relaxed text-grey">
+              <p className="font-body text-sm leading-relaxed text-grey">
                 {item.detail}
               </p>
             </div>
@@ -229,24 +235,24 @@ export default function Skills() {
   );
 
   return (
-    <section id="skills" ref={sectionRef} className="bg-paper py-24 md:py-32">
+    <section id="skills" ref={sectionRef} className="bg-paper py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6 md:px-16">
         <div className="max-w-2xl">
           <p
             ref={eyebrowRef}
-            className="mb-4 font-head text-xs font-semibold uppercase tracking-widest text-grey"
+            className="mb-3 font-head text-xs font-semibold uppercase tracking-widest text-grey"
           >
             Skills &amp; Expertise
           </p>
           <h2
             ref={headingRef}
-            className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-ink md:text-5xl"
+            className="font-head text-3xl font-semibold uppercase leading-[0.95] tracking-tightest text-ink md:text-4xl"
           >
             Every discipline <span className="text-ember">covered.</span>
           </h2>
         </div>
 
-        <div className="mt-14 border-t border-ink/10 md:mt-16">
+        <div className="mt-12 border-t border-ink/10 md:mt-14">
           {SKILLS.map((skill, i) => (
             <SkillRow key={skill.title} skill={skill} index={i} />
           ))}

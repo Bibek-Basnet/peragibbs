@@ -131,7 +131,7 @@ export default function About() {
       className="bg-paper py-24 md:py-32"
     >
       <div className="mx-auto grid max-w-7xl gap-14 px-6 md:grid-cols-2 md:gap-16 md:px-16">
-        {/* Photos — offset stacked composition */}
+        {/* Photos - offset stacked composition */}
         <div className="relative">
           <div
             ref={imageOneMaskRef}
@@ -198,7 +198,7 @@ export default function About() {
             }}
             className="mt-4 font-body text-lg leading-relaxed text-ink/75"
           >
-            His focus is on youth development — building the physical
+            His focus is on youth development - building the physical
             foundation and rugby-specific skill that carries an athlete from
             club level toward representative and national pathways.
           </p>

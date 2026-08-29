@@ -19,17 +19,17 @@ const FAQS = [
   {
     question: "Can I pay monthly instead of upfront?",
     answer:
-      "Yes — both options are available. You can pay weekly on a rolling basis, or pay the full 12-week block upfront.",
+      "Yes - both options are available. You can pay weekly on a rolling basis, or pay the full 12-week block upfront.",
   },
   {
     question: "What's the difference between the coaching tiers?",
     answer:
-      "Foundation is single-discipline, self-managed programming. Intermediate combines strength and conditioning into one balanced block. Advanced is fully tailored with weekly check-ins and adjustments — the most hands-on option.",
+      "Foundation is single-discipline, self-managed programming. Intermediate combines strength and conditioning into one balanced block. Advanced is fully tailored with weekly check-ins and adjustments - the most hands-on option.",
   },
   {
     question: "Do you offer in-person sessions as well as online?",
     answer:
-      "Yes — 1:1 and small group in-person sessions are available from $150/hour, covering skills, speed, movement quality, strength and conditioning. Groups of 4 or more can enquire directly for group rates.",
+      "Yes - 1:1 and small group in-person sessions are available from $150/hour, covering skills, speed, movement quality, strength and conditioning. Groups of 4 or more can enquire directly for group rates.",
   },
   {
     question: "What happens after I apply?",
@@ -39,7 +39,7 @@ const FAQS = [
   {
     question: "Can my program change if my goals or schedule change?",
     answer:
-      "On the Advanced tier, yes — programming is adjusted weekly based on check-ins. On Foundation and Intermediate, the block is structured at the start; if your goals shift significantly, you can move tiers between blocks.",
+      "On the Advanced tier, yes - programming is adjusted weekly based on check-ins. On Foundation and Intermediate, the block is structured at the start; if your goals shift significantly, you can move tiers between blocks.",
   },
 ];
 
