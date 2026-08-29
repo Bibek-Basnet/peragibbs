@@ -51,28 +51,38 @@ export default function Hero() {
         },
       });
 
-      gsap.to([headlineRef.current, subRef.current, ruleRef.current], {
-        opacity: 0,
-        y: -16,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "35% top",
-          scrub: 0.6,
-        },
-      });
+      // FIX: Use scrub: true with a fromTo animation or use a different approach
+      // This creates a proper fade out and fade in based on scroll position
+      gsap.fromTo(
+        [headlineRef.current, subRef.current, ruleRef.current],
+        { opacity: 1, y: 0 },
+        {
+          opacity: 0,
+          y: -16,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "35% top",
+            scrub: 0.6,
+          },
+        }
+      );
 
-      gsap.to(scrollCueRef.current, {
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "15% top",
-          scrub: 0.6,
-        },
-      });
+      gsap.fromTo(
+        scrollCueRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "15% top",
+            scrub: 0.6,
+          },
+        }
+      );
 
       ScrollTrigger.refresh();
     },

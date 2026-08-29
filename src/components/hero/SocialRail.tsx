@@ -43,7 +43,7 @@ export default function SocialRail() {
       ref={railRef}
       className="pointer-events-none absolute inset-y-0 right-6 z-20 hidden flex-col items-center justify-center gap-5 opacity-0 md:right-10 md:flex"
     >
-      <span className="h-16 w-px bg-paper/25" />
+      <span className="h-16 w-px bg-paper/40" /> {/* Increased opacity */}
       {LINKS.map(({ label, href, icon: Icon, external }) => (
         <a
           key={label}
@@ -51,12 +51,12 @@ export default function SocialRail() {
           target={external ? "_blank" : undefined}
           rel={external ? "noreferrer" : undefined}
           aria-label={label}
-          className="pointer-events-auto text-paper/70 transition-colors duration-300 hover:text-ember"
+          className="pointer-events-auto text-paper/90 transition-colors duration-300 hover:text-ember hover:scale-110" // Increased opacity, added scale
         >
-          <Icon size={19} weight="light" />
+          <Icon size={28} weight="regular" /> {/* Increased size to 28, changed to regular weight */}
         </a>
       ))}
-      <span className="h-16 w-px bg-paper/25" />
+      <span className="h-16 w-px bg-paper/40" /> {/* Increased opacity */}
     </div>
   );
 }

@@ -82,7 +82,7 @@ export default function ContactForm() {
             <SocialIcon href="https://wa.me/64220470407" label="WhatsApp">
               <WhatsAppIcon />
             </SocialIcon>
-            <SocialIcon href="https://instagram.com/YOUR_HANDLE" label="Instagram">
+            <SocialIcon href="https://www.instagram.com/peragibbs_mvmt/" label="Instagram">
               <InstagramIcon />
             </SocialIcon>
           </div>

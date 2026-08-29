@@ -103,7 +103,7 @@ export default function Gallery() {
             </h2>
           </div>
 
-          <InstagramButton href="https://instagram.com/YOUR_HANDLE" />
+          <InstagramButton href="https://www.instagram.com/peragibbs_mvmt/" />
         </div>
       </div>
 
