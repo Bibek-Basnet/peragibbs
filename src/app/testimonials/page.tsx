@@ -12,20 +12,20 @@ export const metadata: Metadata = {
 
 export default function TestimonialsPage() {
   return (
-    <main className="bg-ink pb-24 pt-32 md:pb-32 md:pt-40">
+    <main className="bg-paper pb-24 pt-32 md:pb-32 md:pt-40">
       <div className="mx-auto max-w-6xl px-6 md:px-16">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 font-head text-xs font-semibold uppercase tracking-widest text-paper/50 transition-colors hover:text-navy"
+          className="inline-flex items-center gap-2 font-head text-xs font-semibold uppercase tracking-widest text-ink transition-colors hover:text-navy"
         >
           <ArrowLeft size={14} weight="bold" />
           Back to home
         </Link>
 
-        <p className="mb-4 mt-8 font-head text-xs font-semibold uppercase tracking-widest text-paper/50">
+        <p className="mb-4 mt-8 font-head text-xs font-semibold uppercase tracking-widest text-ink">
           Testimonials
         </p>
-        <h1 className="max-w-2xl font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-paper md:text-5xl">
+        <h1 className="max-w-2xl font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-ink md:text-5xl">
           <span className="text-navy"> What athletes say.</span>
         </h1>
 
