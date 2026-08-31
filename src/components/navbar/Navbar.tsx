@@ -131,7 +131,7 @@ export default function Navbar() {
 
           <Link
             ref={ctaRef}
-            href="#apply"
+            href="#services"
             className="hidden rounded-full border border-paper/30 px-6 py-2.5 font-head text-[15px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-navy hover:bg-navy hover:text-ink md:inline-block"
           >
             Apply Now

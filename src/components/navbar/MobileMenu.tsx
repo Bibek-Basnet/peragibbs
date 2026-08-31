@@ -144,7 +144,7 @@ export default function MobileMenu({
             style={{ opacity: 0 }} // Start hidden
           >
             <Link
-  href="#apply"
+  href="#services"
   onClick={onClose}
   className="flex items-center justify-center rounded-full border border-paper bg-paper py-4 font-head text-[15px] font-semibold uppercase tracking-wide text-ink"
 >

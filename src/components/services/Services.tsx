@@ -460,16 +460,19 @@ export default function Services() {
                 </div>
 
                 <a
-                  href="#apply"
-                  className={
-                    "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
-                    (isLight
-                      ? "bg-ink text-paper hover:bg-navy hover:text-paper"
-                      : "bg-navy text-ink hover:bg-paper")
-                  }
-                >
-                  Apply Now
-                </a>
+                 
+  href="https://form.jotform.com/261601330383043"
+  target="_blank"
+  rel="noreferrer"
+  className={
+    "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
+    (isLight
+      ? "bg-ink text-paper hover:bg-navy hover:text-paper"
+      : "bg-navy text-ink hover:bg-paper")
+  }
+>
+  Apply Now
+</a>
               </div>
             );
           })}

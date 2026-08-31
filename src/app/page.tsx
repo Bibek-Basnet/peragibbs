@@ -9,6 +9,7 @@ import Testimonials from "@/components/testimonials/Testimonials";
 import FAQ from "@/components/faq/FAQ";
 import Contact from "@/components/contact/Contact";
 import InstagramFeed from "@/components/instagram/InstagramFeed";
+import CTABand from "@/components/cta/CTABand";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <Skills />
       <InstagramFeed />
       <FAQ />
+      <CTABand />
     
       <Contact />
     </main>
