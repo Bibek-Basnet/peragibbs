@@ -11,17 +11,15 @@ if (typeof window !== "undefined") {
 }
 
 const CREDENTIALS = [
-  { label: "Coaching focus", value: "Strength & Conditioning" },
-  { label: "Specialty", value: "Rugby Skills Development" },
-  { label: "Athletes", value: "Youth & Development Level" },
+  { label: "Coaching focus", value: "Strength, Conditioning, Speed, Skills" },
+  { label: "Specialty", value: "Team Sports (Rugby, Netball, Basketball, Football)" },
+  { label: "Level", value: "Youth, Emerging Athletes" },
 ];
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
-  const imageOneMaskRef = useRef<HTMLDivElement>(null);
-  const imageOneRef = useRef<HTMLDivElement>(null);
-  const imageTwoMaskRef = useRef<HTMLDivElement>(null);
-  const imageTwoRef = useRef<HTMLDivElement>(null);
+  const imageMaskRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const paraRefs = useRef<HTMLParagraphElement[]>([]);
@@ -29,55 +27,27 @@ export default function About() {
 
   useGSAP(
     () => {
-      gsap.set([imageOneMaskRef.current, imageTwoMaskRef.current], {
-        overflow: "hidden",
-      });
-      gsap.set([imageOneRef.current, imageTwoRef.current], { scale: 1.15 });
+      gsap.set(imageMaskRef.current, { overflow: "hidden" });
+      gsap.set(imageRef.current, { scale: 1.15 });
 
-      // ---- Image reveal: clip-path wipe, staggered ----
+      // ---- Image reveal: clip-path wipe ----
       gsap.fromTo(
-        imageOneMaskRef.current,
+        imageMaskRef.current,
         { clipPath: "inset(0% 0% 100% 0%)" },
         {
           clipPath: "inset(0% 0% 0% 0%)",
           duration: 1.2,
           ease: "power4.inOut",
           scrollTrigger: {
-            trigger: imageOneMaskRef.current,
+            trigger: imageMaskRef.current,
             start: "top 85%",
           },
         }
       );
 
-      gsap.fromTo(
-        imageTwoMaskRef.current,
-        { clipPath: "inset(0% 0% 100% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.2,
-          delay: 0.15,
-          ease: "power4.inOut",
-          scrollTrigger: {
-            trigger: imageTwoMaskRef.current,
-            start: "top 85%",
-          },
-        }
-      );
-
-      // ---- Parallax drift on both images while scrolling through ----
-      gsap.to(imageOneRef.current, {
-        yPercent: -8,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.6,
-        },
-      });
-
-      gsap.to(imageTwoRef.current, {
-        yPercent: 8,
+      // ---- Parallax drift while scrolling through ----
+      gsap.to(imageRef.current, {
+        yPercent: -6,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -131,36 +101,19 @@ export default function About() {
       className="bg-paper py-24 md:py-32"
     >
       <div className="mx-auto grid max-w-7xl gap-14 px-6 md:grid-cols-2 md:gap-16 md:px-16">
-        {/* Photos - offset stacked composition */}
-        <div className="relative">
-          <div
-            ref={imageOneMaskRef}
-            className="relative aspect-[4/5] w-[78%] overflow-hidden"
-          >
-            <div ref={imageOneRef} className="absolute inset-0">
-              <Image
-                src="/about-1.jpg"
-                alt="Pera Gibbs coaching on the field"
-                fill
-                sizes="(max-width: 768px) 80vw, 40vw"
-                className="object-cover grayscale"
-              />
-            </div>
-          </div>
-
-          <div
-            ref={imageTwoMaskRef}
-            className="absolute bottom-0 right-0 aspect-[4/5] w-[55%] overflow-hidden border-4 border-paper shadow-xl md:-bottom-10"
-          >
-            <div ref={imageTwoRef} className="absolute inset-0">
-              <Image
-                src="/about-2.jpg"
-                alt="Pera Gibbs, strength and conditioning coach portrait"
-                fill
-                sizes="(max-width: 768px) 55vw, 28vw"
-                className="object-cover grayscale"
-              />
-            </div>
+        {/* Photo */}
+        <div
+          ref={imageMaskRef}
+          className="relative aspect-[4/5] w-full overflow-hidden md:aspect-auto md:h-full"
+        >
+          <div ref={imageRef} className="absolute inset-0">
+            <Image
+              src="/about-1.jpg"
+              alt="Pera Gibbs coaching on the field"
+              fill
+              sizes="(max-width: 768px) 90vw, 40vw"
+              className="object-cover grayscale"
+            />
           </div>
         </div>
 
@@ -175,9 +128,9 @@ export default function About() {
 
           <h2
             ref={headingRef}
-            className="font-head text-4xl font-semibold uppercase leading-[1.05] tracking-tightest text-ink md:text-5xl"
+            className="font-head text-4xl font-semibold uppercase leading-[1.05] tracking-tightest text-navy md:text-5xl"
           >
-            Built on real <span className="text-ember">experience.</span>
+            Built on real experience.
           </h2>
 
           <p
@@ -205,16 +158,15 @@ export default function About() {
 
           <div
             ref={credRef}
-            className="mt-10 grid grid-cols-1 gap-6 border-t border-ink/10 pt-8 sm:grid-cols-3"
+            className="mt-10 grid grid-cols-1 gap-8 border-t border-ink/10 pt-8 sm:grid-cols-3 sm:gap-6"
           >
             {CREDENTIALS.map((item) => (
-              <div key={item.label} className="group cursor-default">
-                <p className="font-head text-xs uppercase tracking-widest text-grey transition-colors duration-300 group-hover:text-ember">
+              <div key={item.label}>
+                <p className="font-head text-xs font-semibold uppercase tracking-widest text-grey">
                   {item.label}
                 </p>
-                <p className="relative mt-1 inline-block font-body text-base text-ink transition-colors duration-300 group-hover:text-ink">
+                <p className="mt-2 font-body text-[15px] leading-snug text-ink">
                   {item.value}
-                  <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-ember transition-transform duration-300 ease-out group-hover:scale-x-100" />
                 </p>
               </div>
             ))}

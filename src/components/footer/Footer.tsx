@@ -8,7 +8,6 @@ const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Skills", href: "#skills" },
-  { label: "Gallery", href: "#gallery" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -40,7 +39,7 @@ export default function Footer() {
 
             <Link
               href="#apply"
-              className="mt-6 inline-block rounded-full border border-paper/30 px-6 py-2.5 font-head text-[13px] font-semibold uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink"
+              className="mt-6 inline-block rounded-full border border-paper/30 px-6 py-2.5 font-head text-[13px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink"
             >
               Apply Now
             </Link>
@@ -51,7 +50,7 @@ export default function Footer() {
             <p className="mb-5 font-head text-xs font-semibold uppercase tracking-widest text-paper/40">
               Navigate
             </p>
-            <ul className="space-y-3 font-head text-[15px] font-semibold">
+            <ul className="space-y-3 font-head text-[15px] font-medium">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <FooterLink href={link.href}>{link.label}</FooterLink>

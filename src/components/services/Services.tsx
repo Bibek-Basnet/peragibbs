@@ -139,7 +139,7 @@ function cardShellClass(treatment: Tier["treatment"]) {
   if (treatment === "dark-accent") {
     return "bg-ink text-paper border-2 border-ember shadow-2xl shadow-ink/20 md:-translate-y-3";
   }
-  return "bg-white text-ink border-2 border-ember/30";
+  return "bg-white text-ink border-2 border-navy/30";
 }
 
 export default function Services() {
@@ -329,16 +329,16 @@ export default function Services() {
         <div className="mx-auto max-w-2xl text-center">
           <p
             ref={eyebrowRef}
-            className="mb-4 font-head text-xs font-bold uppercase tracking-[0.25em] text-ember"
+            className="mb-4 font-head text-xs font-bold uppercase tracking-[0.25em] text-black"
           >
             Coaching Offerings
           </p>
           <h2
-            ref={headingRef}
-            className="font-head text-5xl font-black uppercase leading-[0.92] tracking-tightest text-ink md:text-6xl"
-          >
-            Programs built <span className="text-ember">around you.</span>
-          </h2>
+  ref={headingRef}
+  className="font-head text-5xl font-black uppercase leading-[0.92] tracking-tightest text-navy md:text-6xl"
+>
+  Programs built around you.
+</h2>
         </div>
 
         <div ref={noticeRef} className="mx-auto mt-10 flex flex-col items-center gap-4 md:mt-12">
@@ -390,7 +390,12 @@ export default function Services() {
                 }
               >
                 {tier.badge ? (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-ember px-4 py-1 font-head text-[11px] font-bold uppercase tracking-widest text-ink">
+                  <span
+                    className={
+                      "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 font-head text-[11px] font-bold uppercase tracking-widest " +
+                      (isLight ? "bg-navy text-paper" : "bg-ember text-ink")
+                    }
+                  >
                     {tier.badge}
                   </span>
                 ) : null}
@@ -426,7 +431,11 @@ export default function Services() {
                 <ul className="mt-5 flex flex-col gap-3">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2.5">
-                      <Check size={16} weight="bold" className="mt-0.5 shrink-0 text-ember" />
+                      <Check
+                        size={16}
+                        weight="bold"
+                        className={"mt-0.5 shrink-0 " + (isLight ? "text-navy" : "text-ember")}
+                      />
                       <span
                         className={
                           "font-body text-sm leading-relaxed " +
@@ -455,7 +464,7 @@ export default function Services() {
                   className={
                     "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
                     (isLight
-                      ? "bg-ink text-paper hover:bg-ember hover:text-ink"
+                      ? "bg-ink text-paper hover:bg-navy hover:text-paper"
                       : "bg-ember text-ink hover:bg-paper")
                   }
                 >
@@ -472,7 +481,7 @@ export default function Services() {
             <div className="absolute left-0 right-0 top-[22px] hidden h-px bg-ink/10 md:block" />
             <div
               ref={stepsLineRef}
-              className="absolute left-0 top-[22px] hidden h-px w-full origin-left bg-ember md:block"
+              className="absolute left-0 top-[22px] hidden h-px w-full origin-left bg-navy md:block"
             />
 
             <div className="grid gap-10 md:grid-cols-3 md:gap-6">
@@ -484,7 +493,7 @@ export default function Services() {
                 >
                   <div
                     ref={(el) => setStepDotRef(el, i)}
-                    className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-ember bg-paper font-head text-sm font-bold text-ink transition-colors duration-300 group-hover:bg-ember"
+                    className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-navy bg-paper font-head text-sm font-bold text-ink transition-colors duration-300 group-hover:bg-navy group-hover:text-paper"
                   >
                     {i + 1}
                   </div>
@@ -506,7 +515,7 @@ export default function Services() {
               "group mx-auto flex w-full max-w-md items-center justify-between rounded-2xl border-2 px-6 py-4 transition-all duration-300 " +
               (showCompare
                 ? "border-ink bg-ink text-paper"
-                : "border-ink/15 bg-white text-ink hover:border-ember hover:bg-ember/5")
+                : "border-ink/15 bg-white text-ink hover:border-navy hover:bg-navy/5")
             }
           >
             <span className="text-left">
@@ -527,7 +536,7 @@ export default function Services() {
                 "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 " +
                 (showCompare
                   ? "border-paper/30"
-                  : "border-ink/15 group-hover:border-ember group-hover:bg-ember group-hover:text-ink")
+                  : "border-ink/15 group-hover:border-navy group-hover:bg-navy group-hover:text-paper")
               }
             >
               <CaretDown
@@ -551,7 +560,7 @@ export default function Services() {
                         key={tier.name}
                         className={
                           "p-4 text-left font-head text-xs font-bold uppercase tracking-widest " +
-                          (i === RECOMMENDED_INDEX ? "bg-ember/5 text-ember" : "text-ink")
+                          (i === RECOMMENDED_INDEX ? "bg-navy/5 text-navy" : "text-ink")
                         }
                       >
                         {tier.name}
@@ -580,12 +589,12 @@ export default function Services() {
                               key={i}
                               className={
                                 "p-4 font-body text-sm text-ink " +
-                                (i === RECOMMENDED_INDEX ? "bg-ember/5" : "")
+                                (i === RECOMMENDED_INDEX ? "bg-navy/5" : "")
                               }
                             >
                               {typeof val === "boolean" ? (
                                 val ? (
-                                  <Check size={16} weight="bold" className="text-ember" />
+                                  <Check size={16} weight="bold" className="text-navy" />
                                 ) : (
                                   <span className="text-ink/25">-</span>
                                 )
@@ -637,7 +646,7 @@ export default function Services() {
               {IN_PERSON.map((option) => (
                 <div
                   key={option.label}
-                  className="flex flex-col items-center rounded-xl border border-ink/10 px-4 py-5 text-center transition-colors duration-300 hover:border-ember/40 md:px-6"
+                  className="flex flex-col items-center rounded-xl border border-ink/10 px-4 py-5 text-center transition-colors duration-300 hover:border-navy/40 md:px-6"
                 >
                   <span className="font-head text-2xl font-bold text-ink md:text-3xl">
                     {"$" + option.price}

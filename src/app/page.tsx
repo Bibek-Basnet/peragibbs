@@ -5,9 +5,10 @@ import LogoStrip from "@/components/logos/LogoStrip";
 import Services from "@/components/services/Services";
 import Skills from "@/components/skills/Skills";
 import Testimonials from "@/components/testimonials/Testimonials";
-import Gallery from "@/components/gallery/Gallery";
+
 import FAQ from "@/components/faq/FAQ";
 import Contact from "@/components/contact/Contact";
+import InstagramFeed from "@/components/instagram/InstagramFeed";
 
 export default function Home() {
   return (
@@ -20,9 +21,9 @@ export default function Home() {
       
       <Testimonials />
       <Skills />
-      
-      <Gallery />
+      <InstagramFeed />
       <FAQ />
+    
       <Contact />
     </main>
   );

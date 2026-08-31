@@ -5,7 +5,8 @@
   --color-paper: #fafaf8;
   --color-grey: #6b6b68;
   --color-panel: #1a1a1a;
-  --color-ember: #ff5a1f;
+  --color-ember: #bed4e9;
+  --color-navy: #3373b0;
 
   --font-head: var(--font-poppins), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: var(--font-open-sans), sans-serif;
@@ -104,5 +105,5 @@ html {
 }
 
 .legal-prose a:hover {
-  color: var(--color-ember);
+  color: var(--color-navy);
 }

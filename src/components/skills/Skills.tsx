@@ -34,19 +34,19 @@ const SKILLS = [
     tag: "Technical",
     title: "Rugby skills development",
     description:
-      "Position-specific technical work - ball skills, contact technique, and game-understanding built through repetition.",
+      "Specialises in the technical detail that separates good ball-players from great ones - built through repetition and game-realistic pressure.",
     highlights: [
       {
-        title: "Contact technique",
-        detail: "Body position and technique drilled for safe, effective contact in every phase of play.",
+        title: "Catch & pass technical development",
+        detail: "Handling and passing mechanics broken down and rebuilt for accuracy under pressure.",
       },
       {
-        title: "Ball skills",
-        detail: "Handling and passing practiced under fatigue and match-realistic pressure.",
+        title: "Kicking",
+        detail: "All forms specific to your game - technique built around your position and role.",
       },
       {
-        title: "Game sense",
-        detail: "Decision-making drills that build in-game awareness, not just isolated skill.",
+        title: "Off-load development",
+        detail: "Contact-based off-loading technique trained for timing, control, and decision-making.",
       },
     ],
   },
@@ -118,7 +118,8 @@ const SKILLS = [
     highlights: [
       {
         title: "Weekly tracking",
-        detail: "Load and readiness monitored every week to guide programming decisions.",
+        detail: "Available on the Advanced tier - load and readiness monitored every week to guide programming decisions.",
+        badge: "Advanced tier",
       },
       {
         title: "Progress reviews",
@@ -169,11 +170,11 @@ function SkillRow({
     >
       {/* Left: identity with subtle number */}
       <div className="flex items-start gap-4">
-        <span className="font-head text-sm font-semibold text-ember/20">
+        <span className="font-head text-sm font-semibold text-navy/20">
           {String(index + 1).padStart(2, "0")}
         </span>
         <div>
-          <p className="font-head text-xs font-semibold uppercase tracking-widest text-ember">
+          <p className="font-head text-xs font-semibold uppercase tracking-widest text-navy">
             {skill.tag}
           </p>
           <h3 className="mt-2 font-head text-xl font-semibold tracking-tight text-ink md:text-2xl">
@@ -190,13 +191,20 @@ function SkillRow({
         {skill.highlights.map((item) => (
           <li
             key={item.title}
-            className="flex items-start gap-4 rounded-lg border border-ink/5 px-4 py-3 transition-all duration-200 hover:border-ember/20 hover:bg-ember/[0.02]"
+            className="flex items-start gap-4 rounded-lg border border-ink/5 px-4 py-3 transition-all duration-200 hover:border-navy/20 hover:bg-navy/[0.02]"
           >
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ember/40" />
-            <div>
-              <p className="font-head text-sm font-medium text-ink">
-                {item.title}
-              </p>
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-navy/40" />
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-head text-sm font-medium text-ink">
+                  {item.title}
+                </p>
+                {"badge" in item && item.badge ? (
+                  <span className="rounded-full bg-navy/10 px-2 py-0.5 font-head text-[10px] font-semibold uppercase tracking-widest text-navy">
+                    {item.badge}
+                  </span>
+                ) : null}
+              </div>
               <p className="font-body text-sm leading-relaxed text-grey">
                 {item.detail}
               </p>
@@ -246,9 +254,9 @@ export default function Skills() {
           </p>
           <h2
             ref={headingRef}
-            className="font-head text-3xl font-semibold uppercase leading-[0.95] tracking-tightest text-ink md:text-4xl"
+            className="font-head text-3xl font-semibold uppercase leading-[0.95] tracking-tightest text-navy md:text-4xl"
           >
-            Every discipline <span className="text-ember">covered.</span>
+            Every discipline covered.
           </h2>
         </div>
 

@@ -1,12 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Open_Sans } from "next/font/google";
+import localFont from "next/font/local";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+const lemonMilk = localFont({
+  src: [
+    { path: "../fonts/LEMONMILK-Light.otf", weight: "300", style: "normal" },
+    { path: "../fonts/LEMONMILK-LightItalic.otf", weight: "300", style: "italic" },
+    { path: "../fonts/LEMONMILK-Regular.otf", weight: "400", style: "normal" },
+    { path: "../fonts/LEMONMILK-RegularItalic.otf", weight: "400", style: "italic" },
+    { path: "../fonts/LEMONMILK-Medium.otf", weight: "500", style: "normal" },
+    { path: "../fonts/LEMONMILK-MediumItalic.otf", weight: "500", style: "italic" },
+    { path: "../fonts/LEMONMILK-Bold.otf", weight: "700", style: "normal" },
+    { path: "../fonts/LEMONMILK-BoldItalic.otf", weight: "700", style: "italic" },
+  ],
   variable: "--font-poppins",
   display: "swap",
 });
@@ -124,7 +133,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-NZ" className={`${poppins.variable} ${openSans.variable}`}>
+    <html
+      lang="en-NZ"
+      className={`${lemonMilk.variable} ${openSans.variable}`}
+    >
       <head>
         <script
           type="application/ld+json"

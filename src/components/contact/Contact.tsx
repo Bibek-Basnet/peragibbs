@@ -51,8 +51,8 @@ export default function ContactForm() {
             <p className="mb-4 font-head text-xs font-semibold uppercase tracking-widest text-grey">
               Get in touch
             </p>
-            <h2 className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-ink md:text-5xl">
-              Let&apos;s build <span className="text-ember">your program.</span>
+            <h2 className="font-head text-4xl font-semibold uppercase leading-[1] tracking-tightest text-ink md:text-[2.75rem]">
+              Let&apos;s build<br /> <span className="text-navy">your program.</span>
             </h2>
             <p className="mt-6 max-w-sm font-body text-base leading-relaxed text-grey">
               Tell me a bit about yourself and I&apos;ll follow up personally
@@ -106,8 +106,8 @@ export default function ContactForm() {
                   aria-pressed={role === option}
                   className={`rounded-full border px-5 py-2 font-body text-sm capitalize transition-colors ${
                     role === option
-                      ? "border-ink bg-ink text-paper"
-                      : "border-ink/15 text-ink hover:border-ink/30"
+                      ? "border-navy bg-navy text-paper"
+                      : "border-ink/15 text-ink hover:border-navy/30"
                   }`}
                 >
                   {option}
@@ -133,7 +133,7 @@ export default function ContactForm() {
               required
               rows={4}
               placeholder="What are you looking to achieve?"
-              className="w-full resize-none rounded-lg border border-ink/15 bg-paper/60 px-4 py-3 font-body text-base text-ink placeholder:text-grey/50 transition-colors focus:border-ember focus:bg-white focus:outline-none focus:ring-4 focus:ring-ember/10"
+              className="w-full resize-none rounded-lg border border-ink/15 bg-paper/60 px-4 py-3 font-body text-base text-ink placeholder:text-grey/50 transition-colors focus:border-navy focus:bg-white focus:outline-none focus:ring-4 focus:ring-navy/10"
             />
           </div>
 
@@ -141,7 +141,7 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="w-full rounded-lg bg-ink px-8 py-3.5 font-head text-xs font-semibold uppercase tracking-widest text-paper transition-colors hover:bg-ember disabled:opacity-50 sm:w-auto"
+              className="w-full rounded-lg bg-ink px-8 py-3.5 font-head text-xs font-semibold uppercase tracking-widest text-paper transition-colors hover:bg-navy disabled:opacity-50 sm:w-auto"
             >
               {status === "sending" ? "Sending..." : "Send message"}
             </button>
@@ -152,7 +152,7 @@ export default function ContactForm() {
               </p>
             )}
             {status === "error" && (
-              <p className="font-body text-sm text-ember">
+              <p className="font-body text-sm text-navy">
                 Something went wrong. Try WhatsApp instead?
               </p>
             )}
@@ -187,7 +187,7 @@ function FormField({
         name={id}
         type={type}
         required={required}
-        className="w-full rounded-lg border border-ink/15 bg-paper/60 px-4 py-3 font-body text-base text-ink placeholder:text-grey/50 transition-colors focus:border-ember focus:bg-white focus:outline-none focus:ring-4 focus:ring-ember/10"
+        className="w-full rounded-lg border border-ink/15 bg-paper/60 px-4 py-3 font-body text-base text-ink placeholder:text-grey/50 transition-colors focus:border-navy focus:bg-white focus:outline-none focus:ring-4 focus:ring-navy/10"
       />
     </div>
   );
@@ -208,7 +208,7 @@ function SocialIcon({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-ember hover:text-ember"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-navy hover:text-navy"
     >
       {children}
     </a>

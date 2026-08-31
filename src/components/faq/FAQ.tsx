@@ -86,7 +86,7 @@ function FAQItem({
         aria-expanded={isOpen}
         className="flex w-full items-center justify-between gap-6 py-6 text-left md:py-7"
       >
-        <span className="font-head text-lg font-semibold text-ink md:text-xl">
+        <span className="font-head text-lg font-medium text-ink md:text-xl">
           {item.question}
         </span>
         <span
@@ -147,9 +147,9 @@ export default function FAQ() {
           </p>
           <h2
             ref={headingRef}
-            className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-ink md:text-5xl"
+            className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-navy md:text-5xl"
           >
-            Questions, <span className="text-ember">answered.</span>
+            Questions, answered.
           </h2>
         </div>
 

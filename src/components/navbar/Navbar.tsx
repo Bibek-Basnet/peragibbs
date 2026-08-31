@@ -12,7 +12,6 @@ const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Skills", href: "#skills" },
-  { label: "Gallery", href: "#gallery" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -87,6 +86,17 @@ export default function Navbar() {
         }}
         className="fixed inset-x-0 top-0 z-50"
       >
+        {/* Always-on scrim so nav stays legible before the scroll-triggered
+            solid background kicks in, regardless of what's behind it */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-full"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0) 100%)",
+          }}
+        />
+
         <motion.div
           style={{ opacity: borderOpacity }}
           className="absolute inset-x-0 bottom-0 h-px bg-paper/10"
@@ -109,7 +119,7 @@ export default function Navbar() {
 
           <ul
             ref={linksRef}
-            className="hidden items-center gap-9 font-head text-[17px] font-semibold text-paper md:flex"
+            className="hidden items-center gap-9 font-head text-[16px] font-medium text-paper md:flex"
           >
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
@@ -121,7 +131,7 @@ export default function Navbar() {
           <Link
             ref={ctaRef}
             href="#apply"
-            className="hidden rounded-full border border-paper/30 px-6 py-2.5 font-head text-[15px] font-semibold uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink md:inline-block"
+            className="hidden rounded-full border border-paper/30 px-6 py-2.5 font-head text-[15px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink md:inline-block"
           >
             Apply Now
           </Link>
