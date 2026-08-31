@@ -144,7 +144,9 @@ export default function MobileMenu({
             style={{ opacity: 0 }} // Start hidden
           >
             <Link
-  href="#services"
+  href="https://form.jotform.com/261601330383043"
+  target="_blank"
+  rel="noreferrer"
   onClick={onClose}
   className="flex items-center justify-center rounded-full border border-paper bg-paper py-4 font-head text-[15px] font-semibold uppercase tracking-wide text-ink"
 >

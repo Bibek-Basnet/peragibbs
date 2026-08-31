@@ -39,7 +39,9 @@ export default function Footer() {
             </p>
 
             <Link
-              href="#services"
+             href="https://form.jotform.com/261601330383043"
+  target="_blank"
+  rel="noreferrer"
               className="mt-6 inline-block rounded-full border border-paper/30 px-6 py-2.5 font-head text-[13px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-navy hover:text-ink"
             >
               Apply Now
