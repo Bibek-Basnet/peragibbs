@@ -7,8 +7,10 @@ import { useGSAP } from "@gsap/react";
 
 const LOGOS = [
   { src: "/logos/logo1.png", alt: "All Blacks Sevens" },
-  { src: "/logos/logo3.png", alt: "Black Ferns Sevens" },
-  { src: "/logos/logo2.png", alt: "Northern Mystics" },
+   { src: "/logos/logo2.png", alt: "Northern Mystics" },
+  
+   { src: "/logos/logo3.png", alt: "Black Ferns Sevens" },
+ 
   { src: "/logos/logo4.png", alt: "Dilworth School" },
 ];
 
