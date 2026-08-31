@@ -1,25 +1,52 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    instgrm?: {
+      Embeds?: {
+        process: () => void;
+      };
+    };
+  }
+}
 
 export default function InstagramFeed() {
   const [isLoading, setIsLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Load LightWidget script dynamically
+    // Load Instagram embed script
     const script = document.createElement("script");
-    script.src = "https://cdn.lightwidget.com/widgets/lightwidget.js";
+    script.src = "//www.instagram.com/embed.js";
     script.async = true;
-    script.onload = () => setIsLoading(false);
+    script.onload = () => {
+      // Process any Instagram embeds
+      if (window.instgrm?.Embeds?.process) {
+        window.instgrm.Embeds.process();
+      }
+      setIsLoading(false);
+    };
     document.body.appendChild(script);
 
     return () => {
       // Cleanup
       const scripts = document.querySelectorAll(
-        'script[src="https://cdn.lightwidget.com/widgets/lightwidget.js"]'
+        'script[src="//www.instagram.com/embed.js"]'
       );
       scripts.forEach((s) => s.remove());
     };
   }, []);
+
+  // Instagram post URLs - replace these with your client's actual post URLs
+  const posts = [
+    "https://www.instagram.com/p/DVrhEyZkgDC/?img_index=1",
+    "https://www.instagram.com/p/DROR7k2EgpA/",
+    "https://www.instagram.com/p/DajowasgvFy/",
+    "https://www.instagram.com/p/DcH_cEOAncN/",
+    "https://www.instagram.com/p/DcaX6u_g8Sy/",
+    "https://www.instagram.com/p/Dch_-80Ajt1/",
+  ];
 
   return (
     <section className="bg-ink py-24 md:py-32">
@@ -31,25 +58,39 @@ export default function InstagramFeed() {
           Follow the <span className="text-ember">journey.</span>
         </h2>
 
-        <div className="relative mt-14 overflow-hidden rounded-2xl border border-paper/10 md:mt-16">
+        <div ref={containerRef} className="relative mt-14 md:mt-16">
           {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-ink/80">
+            <div className="flex min-h-[400px] items-center justify-center rounded-2xl border border-paper/10">
               <div className="h-12 w-12 animate-spin rounded-full border-4 border-ember/20 border-t-ember" />
             </div>
           )}
 
-          <iframe
-            src="//lightwidget.com/widgets/4352b1dda66b5fd5bedbbb9e7d7133de.html"
-            scrolling="no"
-            allowTransparency={true}
-            className="lightwidget-widget"
-            style={{
-              width: "100%",
-              border: 0,
-              overflow: "hidden",
-              minHeight: "400px",
-            }}
-          />
+          <div 
+            className={`grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 ${isLoading ? 'hidden' : ''}`}
+          >
+            {posts.map((postUrl, index) => (
+              <div 
+                key={index}
+                className="overflow-hidden rounded-2xl border border-paper/10 bg-paper/5 transition-transform hover:scale-[1.02]"
+              >
+                <blockquote
+                  className="instagram-media"
+                  data-instgrm-permalink={postUrl}
+                  data-instgrm-version="14"
+                  style={{
+                    background: 'transparent',
+                    border: 0,
+                    borderRadius: '12px',
+                    margin: 0,
+                    maxWidth: '100%',
+                    minWidth: 'auto',
+                    padding: 0,
+                    width: '100%',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-8 flex justify-center">
@@ -74,8 +115,6 @@ function InstagramButton({ href }: { href: string }) {
   );
 }
 
-// Official Simple Icons Instagram glyph + brand gradient, so it reads as the
-// real logo rather than a generic outline icon.
 function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg
