@@ -52,7 +52,7 @@ export default function ContactForm() {
               Get in touch
             </p>
             <h2 className="font-head text-4xl font-semibold uppercase leading-[1] tracking-tightest text-ink md:text-[2.75rem]">
-              Let&apos;s build<br /> <span className="text-navy">your program.</span>
+               <span className="text-navy"> Let&apos;s build<br /> your program.</span>
             </h2>
             <p className="mt-6 max-w-sm font-body text-base leading-relaxed text-grey">
               Tell me a bit about yourself and I&apos;ll follow up personally

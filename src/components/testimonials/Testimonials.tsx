@@ -65,7 +65,7 @@ export default function Testimonials() {
               ref={headingRef}
               className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-paper md:text-5xl"
             >
-              What athletes <span className="text-navy">say.</span>
+              <span className="text-navy">What athletes say.</span>
             </h2>
           </div>
 

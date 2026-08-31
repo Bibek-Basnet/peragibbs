@@ -79,7 +79,7 @@ export default function CTABand() {
               data-fade
               className="mt-3 font-head text-2xl font-semibold uppercase leading-tight tracking-tight text-paper md:text-3xl"
             >
-              Reach out <span className="text-navy">directly.</span>
+               <span className="text-navy">Reach out directly.</span>
             </p>
             <p
               data-fade
