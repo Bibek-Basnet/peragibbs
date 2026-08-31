@@ -131,7 +131,7 @@ export default function Navbar() {
           <Link
             ref={ctaRef}
             href="#apply"
-            className="hidden rounded-full border border-paper/30 px-6 py-2.5 font-head text-[15px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink md:inline-block"
+            className="hidden rounded-full border border-paper/30 px-6 py-2.5 font-head text-[15px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-navy hover:bg-navy hover:text-ink md:inline-block"
           >
             Apply Now
           </Link>
@@ -144,12 +144,12 @@ export default function Navbar() {
             className="group relative z-50 flex h-8 w-8 flex-col items-end justify-center gap-[7px] md:hidden"
           >
             <span
-              className={`h-px bg-paper transition-all duration-300 ease-out group-hover:bg-ember ${
+              className={`h-px bg-paper transition-all duration-300 ease-out group-hover:bg-navy ${
                 isMenuOpen ? "w-6 translate-y-[4px] rotate-45" : "w-6"
               }`}
             />
             <span
-              className={`h-px bg-paper transition-all duration-300 ease-out group-hover:bg-ember ${
+              className={`h-px bg-paper transition-all duration-300 ease-out group-hover:bg-navy ${
                 isMenuOpen ? "w-6 -translate-y-[4px] -rotate-45" : "w-4"
               }`}
             />
@@ -172,10 +172,10 @@ function NavLink({
   return (
     <Link
       href={href}
-      className="group relative py-1 text-paper/75 transition-colors duration-300 hover:text-ember"
+      className="group relative py-1 text-paper/75 transition-colors duration-300 hover:text-navy"
     >
       {children}
-      <span className="absolute inset-x-0 -bottom-1 h-px origin-center scale-x-0 bg-ember transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:scale-x-100" />
+      <span className="absolute inset-x-0 -bottom-1 h-px origin-center scale-x-0 bg-navy transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:scale-x-100" />
     </Link>
   );
 }

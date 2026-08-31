@@ -393,7 +393,7 @@ export default function Services() {
                   <span
                     className={
                       "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 font-head text-[11px] font-bold uppercase tracking-widest " +
-                      (isLight ? "bg-navy text-paper" : "bg-ember text-ink")
+                      (isLight ? "bg-navy text-paper" : "bg-navy text-ink")
                     }
                   >
                     {tier.badge}
@@ -434,7 +434,7 @@ export default function Services() {
                       <Check
                         size={16}
                         weight="bold"
-                        className={"mt-0.5 shrink-0 " + (isLight ? "text-navy" : "text-ember")}
+                        className={"mt-0.5 shrink-0 " + (isLight ? "text-navy" : "text-navy")}
                       />
                       <span
                         className={
@@ -453,7 +453,7 @@ export default function Services() {
                     <span className="font-semibold">Best for:</span> {tier.bestFor}
                   </p>
                   {tier.treatment === "dark-accent" ? (
-                    <p className="mt-2 font-head text-xs font-bold uppercase tracking-widest text-ember">
+                    <p className="mt-2 font-head text-xs font-bold uppercase tracking-widest text-navy">
                       {ADVANCED_SPOTS_LEFT + " spots left this intake"}
                     </p>
                   ) : null}
@@ -465,7 +465,7 @@ export default function Services() {
                     "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
                     (isLight
                       ? "bg-ink text-paper hover:bg-navy hover:text-paper"
-                      : "bg-ember text-ink hover:bg-paper")
+                      : "bg-navy text-ink hover:bg-paper")
                   }
                 >
                   Apply Now

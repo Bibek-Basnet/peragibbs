@@ -99,9 +99,9 @@ export default function Gallery() {
               ref={headingRef}
               className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-paper md:text-5xl"
             >
-              Moments from <span className="text-ember">the field.</span>
+              Moments from <span className="text-navy">the field.</span>
             </h2>
-          </div>
+          </div>f\
 
           <InstagramButton href="https://www.instagram.com/peragibbs_mvmt/" />
         </div>

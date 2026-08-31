@@ -39,7 +39,7 @@ export default function Footer() {
 
             <Link
               href="#apply"
-              className="mt-6 inline-block rounded-full border border-paper/30 px-6 py-2.5 font-head text-[13px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink"
+              className="mt-6 inline-block rounded-full border border-paper/30 px-6 py-2.5 font-head text-[13px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-navy hover:text-ink"
             >
               Apply Now
             </Link>
@@ -68,7 +68,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:admin@peragibbsmovement.com"
-                  className="transition-colors duration-300 hover:text-ember"
+                  className="transition-colors duration-300 hover:text-navy"
                 >
                   admin@peragibbsmovement.com
                 </a>
@@ -78,7 +78,7 @@ export default function Footer() {
                   href="https://wa.me/64220470407"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors duration-300 hover:text-ember"
+                  className="transition-colors duration-300 hover:text-navy"
                 >
                   WhatsApp
                 </a>
@@ -108,7 +108,7 @@ export default function Footer() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="transition-colors duration-300 hover:text-ember"
+                  className="transition-colors duration-300 hover:text-navy"
                 >
                   {link.label}
                 </Link>
@@ -125,10 +125,10 @@ function FooterLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <Link
       href={href}
-      className="group relative inline-block py-0.5 text-paper/75 transition-colors duration-300 hover:text-ember"
+      className="group relative inline-block py-0.5 text-paper/75 transition-colors duration-300 hover:text-navy"
     >
       {children}
-      <span className="absolute inset-x-0 -bottom-0.5 h-px origin-center scale-x-0 bg-ember transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:scale-x-100" />
+      <span className="absolute inset-x-0 -bottom-0.5 h-px origin-center scale-x-0 bg-navy transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:scale-x-100" />
     </Link>
   );
 }
@@ -148,7 +148,7 @@ function SocialIcon({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-paper/15 text-paper/75 transition-colors hover:border-ember hover:text-ember"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-paper/15 text-paper/75 transition-colors hover:border-ember hover:text-navy"
     >
       {children}
     </a>

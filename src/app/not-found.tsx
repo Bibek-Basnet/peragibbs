@@ -100,7 +100,7 @@ export default function NotFound() {
       <div
         ref={glowRef}
         aria-hidden
-        className="pointer-events-none absolute h-[45vh] w-[45vh] rounded-full bg-ember/20 blur-[100px] md:h-[60vh] md:w-[60vh] md:blur-[120px]"
+        className="pointer-events-none absolute h-[45vh] w-[45vh] rounded-full bg-navy/20 blur-[100px] md:h-[60vh] md:w-[60vh] md:blur-[120px]"
       />
 
       {/* Grid texture */}
@@ -123,7 +123,7 @@ export default function NotFound() {
 
       <div className="relative z-10 flex w-full max-w-full flex-col items-center px-2">
         <pre
-          className="select-none overflow-hidden font-mono leading-[1.15] text-ember"
+          className="select-none overflow-hidden font-mono leading-[1.15] text-navy"
           style={{ fontSize: "clamp(0.85rem, 5.4vw, 4.5rem)" }}
         >
           {ASCII_404.map((line, lineIndex) => (
@@ -154,7 +154,7 @@ export default function NotFound() {
         <Link
           data-fade
           href="/"
-          className="mt-7 inline-flex items-center gap-2 rounded-full border border-paper px-6 py-2.5 font-head text-xs font-semibold uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-ember hover:text-ink sm:mt-8 sm:px-7 sm:py-3 sm:text-sm"
+          className="mt-7 inline-flex items-center gap-2 rounded-full border border-paper px-6 py-2.5 font-head text-xs font-semibold uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-navy hover:text-ink sm:mt-8 sm:px-7 sm:py-3 sm:text-sm"
         >
           <ArrowLeft size={16} weight="bold" />
           Back to home

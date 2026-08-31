@@ -55,7 +55,7 @@ export default function InstagramFeed() {
           Instagram
         </p>
         <h2 className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-paper md:text-5xl">
-          Follow the <span className="text-ember">journey.</span>
+          Follow the <span className="text-navy">journey.</span>
         </h2>
 
         <div ref={containerRef} className="relative mt-14 md:mt-16">

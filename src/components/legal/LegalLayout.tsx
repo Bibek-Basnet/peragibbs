@@ -16,7 +16,7 @@ export default function LegalLayout({
       <div className="mx-auto max-w-3xl px-6 py-20 md:px-10 md:py-28">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 font-head text-xs font-semibold uppercase tracking-widest text-grey transition-colors hover:text-ember"
+          className="inline-flex items-center gap-2 font-head text-xs font-semibold uppercase tracking-widest text-grey transition-colors hover:text-navy"
         >
           <ArrowLeft size={14} weight="bold" />
           Back to home
@@ -38,7 +38,7 @@ export default function LegalLayout({
             Questions about this document? Contact{" "}
             <a
               href="mailto:admin@peragibbsmovement.com"
-              className="font-semibold text-ink underline underline-offset-2 hover:text-ember"
+              className="font-semibold text-ink underline underline-offset-2 hover:text-navy"
             >
               admin@peragibbsmovement.com
             </a>

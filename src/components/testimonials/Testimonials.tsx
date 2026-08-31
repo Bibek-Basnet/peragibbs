@@ -108,7 +108,7 @@ export default function Testimonials() {
             ref={headingRef}
             className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-paper md:text-5xl"
           >
-            What athletes <span className="text-ember">say.</span>
+            What athletes <span className="text-navy">say.</span>
           </h2>
         </div>
       </div>
@@ -147,7 +147,7 @@ export default function Testimonials() {
               {/* Quote */}
               <div className="flex flex-1 flex-col justify-between p-6 md:p-7">
                 <div>
-                  <Quotes size={22} weight="fill" className="text-ember" />
+                  <Quotes size={22} weight="fill" className="text-navy" />
                   <p className="mt-3 font-body text-sm leading-relaxed text-paper/85 md:text-base">
                     &ldquo;{t.quote}&rdquo;
                   </p>

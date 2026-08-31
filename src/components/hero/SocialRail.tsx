@@ -51,7 +51,7 @@ export default function SocialRail() {
           target={external ? "_blank" : undefined}
           rel={external ? "noreferrer" : undefined}
           aria-label={label}
-          className="pointer-events-auto text-paper/90 transition-colors duration-300 hover:text-ember hover:scale-110" // Increased opacity, added scale
+          className="pointer-events-auto text-paper/90 transition-colors duration-300 hover:text-navy hover:scale-110" // Increased opacity, added scale
         >
           <Icon size={28} weight="regular" /> {/* Increased size to 28, changed to regular weight */}
         </a>

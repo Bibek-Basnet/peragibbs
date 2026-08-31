@@ -130,7 +130,7 @@ export default function Hero() {
         <div ref={maskRef} className="max-w-2xl md:max-w-3xl">
           <h1
             ref={headlineRef}
-            className="font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-ember"
+            className="font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy"
           >
             <span className="flex flex-wrap gap-x-3 md:gap-x-4">
               <MaskedWord>Move</MaskedWord>
@@ -149,7 +149,7 @@ export default function Hero() {
           </p>
         </div>
 
-        <span ref={ruleRef} className="mt-5 h-px w-16 origin-left bg-ember md:mt-6" />
+        <span ref={ruleRef} className="mt-5 h-px w-16 origin-left bg-navy md:mt-6" />
 
         <p
           ref={subRef}
