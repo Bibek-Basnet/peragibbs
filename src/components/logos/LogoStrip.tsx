@@ -6,12 +6,10 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 const LOGOS = [
-  { src: "/logos/logo1.png", alt: "All Blacks Sevens" },
-   { src: "/logos/logo2.png", alt: "Northern Mystics" },
-  
-   { src: "/logos/logo3.png", alt: "Black Ferns Sevens" },
- 
-  { src: "/logos/logo4.png", alt: "Dilworth School" },
+  { src: "/logos/logo1.png", alt: "All Blacks Sevens", invert: true },
+  { src: "/logos/logo2.png", alt: "Northern Mystics", invert: false },
+  { src: "/logos/logo3.png", alt: "Black Ferns Sevens", invert: true },
+  { src: "/logos/logo4.png", alt: "Dilworth School", invert: false },
 ];
 
 export default function LogoStrip() {
@@ -59,6 +57,7 @@ export default function LogoStrip() {
                   fill
                   sizes="176px"
                   className="object-contain"
+                  style={logo.invert ? { filter: "brightness(0) invert(1)" } : undefined}
                 />
               </div>
             ))}
