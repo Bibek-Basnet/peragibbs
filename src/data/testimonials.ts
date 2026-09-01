@@ -20,7 +20,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "I had the privilege of being coached by Pera across the 2021, 2022 and 2023 ANZ Premiership seasons as well as between seasons leading into Silver Ferns campaigns. In my time with him, my fitness testing numbers shifted considerably and those improved results became my new baseline. These results gained me selection for the 2022 Commonwealth Games and the 2023 Netball World Cup.",
+      "I had the privilege of being coached by Pera across the 2021, 2022 and 2023 ANZ Premiership seasons as well as between seasons leading into Silver Ferns campaigns. These results gained me selection for the 2022 Commonwealth Games and the 2023 Netball World Cup.",
     name: "Grace Nweke",
     role: "Silver Fern",
     photo: "/testimonials/Grace.jpg",
@@ -28,7 +28,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "I have been lucky enough to work with Pera over many stages through both my amateur and professional rugby career. He's clearly very well educated and confident in what he is teaching is right for me specifically at that time as his messaging around what we do and why we do it is always super clear. I've always trusted Pera to get me fit and firing as an athlete to perform at the highest level when healthy and have also been lucky enough to have his guidance through injury and rehab periods of my career as well.",
+      "I have been lucky enough to work with Pera over many stages through both my amateur and professional rugby career. He's clearly very well educated and confident in what he is teaching is right for me specifically at that time as his messaging around what we do and why we do it is always super clear.",
     name: "Brad Weber",
     role: "All Black",
     photo: "/testimonials/Brad Weber.jpg",
@@ -36,7 +36,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "I've known Pera for over 20 years and have jumped into plenty of sessions with him over that time, so I've seen first-hand how he operates. He's got an unreal growth mindset and is seriously competitive. His energy rubs off on those around him and undoubtedly brings out the best in people. Everything he does has a purpose, and he keeps things simple.",
+      "I've known Pera for over 20 years and have jumped into plenty of sessions with him over that time, so I've seen first-hand how he operates. He's got an unreal growth mindset and is seriously competitive. His energy rubs off on those around him and undoubtedly brings out the best in people.",
     name: "Jamison Gibson-Park",
     role: "Irish International Rugby | Leinster Rugby",
     photo: "/testimonials/Jamison Gibson Park.webp",

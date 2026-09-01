@@ -43,9 +43,6 @@ export default function InstagramFeed() {
     "https://www.instagram.com/p/DVrhEyZkgDC/?img_index=1",
     "https://www.instagram.com/p/DROR7k2EgpA/",
     "https://www.instagram.com/p/DajowasgvFy/",
-    "https://www.instagram.com/p/DcH_cEOAncN/",
-    "https://www.instagram.com/p/DcaX6u_g8Sy/",
-    "https://www.instagram.com/p/Dch_-80Ajt1/",
   ];
 
   return (

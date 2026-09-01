@@ -41,7 +41,6 @@ export default function Hero() {
 
       // ---- Initial states ----
       gsap.set(imageWrapRef.current, { scale: 1.08, opacity: 0 });
-      gsap.set(maskRef.current, { overflow: "hidden" });
       gsap.set(wordInners, { yPercent: 120 });
       gsap.set(taglineRef.current, { opacity: 0, y: 10 });
       gsap.set(subRef.current, { opacity: 0, y: 12 });
@@ -60,9 +59,6 @@ export default function Hero() {
         .to(subRef.current, { opacity: 1, y: 0, duration: 0.7 }, "-=0.4");
 
       // ---- Pinned scroll story ----
-      // Only registered once the entrance has fully finished, so it never
-      // fights the entrance tween for control of the same elements — that
-      // race was what left "Move" stuck invisible on scroll-up.
       tl.eventCallback("onComplete", () => {
         const scrollTl = gsap.timeline({
           defaults: { ease: "power2.in", duration: 1 },
@@ -128,9 +124,12 @@ export default function Hero() {
 
       <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 md:pb-20">
         <div ref={maskRef} className="max-w-2xl md:max-w-3xl">
+          {/* Only the headline itself shifts up on mobile — a transform
+              doesn't affect layout space, so the tagline right below it
+              stays exactly where it was. */}
           <h1
             ref={headlineRef}
-            className="font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy"
+            className="-translate-y-24 font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy sm:translate-y-0"
           >
             <span className="flex flex-wrap gap-x-3 md:gap-x-4">
               <MaskedWord>Move</MaskedWord>

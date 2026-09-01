@@ -67,7 +67,7 @@ const TIERS: Tier[] = [
     bestFor:
       "Athletes chasing a specific performance target or needing specialised support (e.g. injury rehab).",
     treatment: "dark-accent",
-    badge: "Full Coaching",
+    
   },
 ];
 
@@ -84,7 +84,7 @@ const STEPS = [
   },
   {
     title: "Onboarding call",
-    desc: "We map your goals and confirm the right tier.",
+    desc: "We go over your training history, map out your goals and confirm the best programme tier.",
   },
   {
     title: "Start training",
