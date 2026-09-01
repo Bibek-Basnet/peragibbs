@@ -123,39 +123,41 @@ export default function Hero() {
       />
 
       <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 md:pb-20">
-        <div ref={maskRef} className="max-w-2xl md:max-w-3xl">
-          {/* Only the headline itself shifts up on mobile — a transform
-              doesn't affect layout space, so the tagline right below it
-              stays exactly where it was. */}
-          <h1
-            ref={headlineRef}
-            className="-translate-y-24 font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy sm:translate-y-0"
-          >
-            <span className="flex flex-wrap gap-x-3 md:gap-x-4">
-              <MaskedWord>Move</MaskedWord>
-              <MaskedWord>well,</MaskedWord>
-            </span>
-            <span className="flex flex-wrap gap-x-3 md:gap-x-4">
-              <MaskedWord>perform</MaskedWord>
-              <MaskedWord>better.</MaskedWord>
-            </span>
-          </h1>
+        {/* Whole content group (headline, tagline, rule, paragraph) shifts
+            up together on mobile — existing margins between them (mt-2,
+            mt-5, mt-4) stay untouched, so their gaps remain equal. */}
+        <div className="-translate-y-16 sm:translate-y-0">
+          <div ref={maskRef} className="max-w-2xl md:max-w-3xl">
+            <h1
+              ref={headlineRef}
+              className="font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy"
+            >
+              <span className="flex flex-wrap gap-x-3 md:gap-x-4">
+                <MaskedWord>Move</MaskedWord>
+                <MaskedWord>well,</MaskedWord>
+              </span>
+              <span className="flex flex-wrap gap-x-3 md:gap-x-4">
+                <MaskedWord>perform</MaskedWord>
+                <MaskedWord>better.</MaskedWord>
+              </span>
+            </h1>
+            <p
+              ref={taglineRef}
+              className="mt-2 font-head text-[clamp(0.9rem,2vw,1.15rem)] font-normal uppercase tracking-widest text-paper/60"
+            >
+              Kia Neke Pai
+            </p>
+          </div>
+
+          <span ref={ruleRef} className="mt-5 h-px w-16 origin-left bg-navy md:mt-6" />
+
           <p
-            ref={taglineRef}
-            className="mt-2 font-head text-[clamp(0.9rem,2vw,1.15rem)] font-normal uppercase tracking-widest text-paper/60"
+            ref={subRef}
+            className="mt-4 max-w-md font-body text-base text-paper/75 md:text-lg"
           >
-            Kia Neke Pai
+            Developing athletes from the ground up - structured S&C coaching from self-managed programming to fully tailored weekly support and in-person sessions in Auckland.
           </p>
         </div>
-
-        <span ref={ruleRef} className="mt-5 h-px w-16 origin-left bg-navy md:mt-6" />
-
-        <p
-          ref={subRef}
-          className="mt-4 max-w-md font-body text-base text-paper/75 md:text-lg"
-        >
-          Developing athletes from the ground up - structured S&C coaching from self-managed programming to fully tailored weekly support and in-person sessions in Auckland.
-        </p>
       </div>
 
       <SocialRail />
