@@ -62,13 +62,15 @@ export default function InstagramFeed() {
             </div>
           )}
 
-          <div 
+          <div
             className={`grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 ${isLoading ? 'hidden' : ''}`}
           >
             {posts.map((postUrl, index) => (
-              <div 
+              <div
                 key={index}
-                className="overflow-hidden rounded-2xl border border-paper/10 bg-paper/5 transition-transform hover:scale-[1.02]"
+                className={`overflow-hidden rounded-2xl border border-paper/10 bg-paper/5 transition-transform hover:scale-[1.02] ${
+                  index === 1 ? "block" : "hidden md:block"
+                }`}
               >
                 <blockquote
                   className="instagram-media"
