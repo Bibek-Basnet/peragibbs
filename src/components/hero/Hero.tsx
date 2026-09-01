@@ -102,7 +102,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* Top scrim — keeps the fixed navbar legible over bright areas of the photo */}
+      {/* Top scrim - keeps the fixed navbar legible over bright areas of the photo */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-40 md:h-48"
@@ -112,7 +112,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Bottom scrim — grounds the headline/subtext over the shoulders */}
+      {/* Bottom scrim - grounds the headline/subtext over the shoulders */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[42%]"
@@ -124,7 +124,7 @@ export default function Hero() {
 
       <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 md:pb-20">
         {/* Whole content group (headline, tagline, rule, paragraph) shifts
-            up together on mobile — existing margins between them (mt-2,
+            up together on mobile - existing margins between them (mt-2,
             mt-5, mt-4) stay untouched, so their gaps remain equal. */}
         <div className="-translate-y-16 sm:translate-y-0">
           <div ref={maskRef} className="max-w-2xl md:max-w-3xl">

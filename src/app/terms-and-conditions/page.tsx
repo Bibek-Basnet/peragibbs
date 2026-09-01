@@ -18,12 +18,12 @@ export default function TermsPage() {
 
       <h2>2. Coaching Services</h2>
 
-      <h3>Online Coaching — Foundation (V1)</h3>
+      <h3>Online Coaching - Foundation (V1)</h3>
       <ul>
         <li>12-week structured training programme delivered via TeamBuildr</li>
         <li>One onboarding consultation</li>
         <li>Programme allocation based on initial screening</li>
-        <li>Single-discipline programming — strength or conditioning based</li>
+        <li>Single-discipline programming - strength or conditioning based</li>
         <li>Structured block, self-managed</li>
         <li>Messaging support (responses provided within 48 business hours)</li>
       </ul>
@@ -32,7 +32,7 @@ export default function TermsPage() {
         getting started and want to keep it simple.
       </p>
 
-      <h3>Online Coaching — Intermediate (V2)</h3>
+      <h3>Online Coaching - Intermediate (V2)</h3>
       <ul>
         <li>12-week structured training programme delivered via TeamBuildr</li>
         <li>One onboarding consultation</li>
@@ -49,7 +49,7 @@ export default function TermsPage() {
         development without needing hands-on coaching.
       </p>
 
-      <h3>Online Coaching — Advanced (V3)</h3>
+      <h3>Online Coaching - Advanced (V3)</h3>
       <ul>
         <li>12-week structured training programme delivered via TeamBuildr</li>
         <li>One onboarding consultation</li>
@@ -74,7 +74,7 @@ export default function TermsPage() {
         <li>Booked based on availability</li>
         <li>
           For groups of 4 or more, pricing is based on group size, session
-          structure, and location — please enquire directly
+          structure, and location - please enquire directly
         </li>
       </ul>
 
@@ -157,8 +157,8 @@ export default function TermsPage() {
 
       <h2>8. Privacy &amp; Data Protection</h2>
       <p>
-        Pera Gibbs Movement collects and holds personal information —
-        including health, injury, and training history — that you provide
+        Pera Gibbs Movement collects and holds personal information -
+        including health, injury, and training history - that you provide
         in order to deliver safe and effective coaching services.
       </p>
       <ul>

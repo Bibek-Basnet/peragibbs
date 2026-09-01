@@ -13,7 +13,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const AUTO_SCROLL_SPEED = 0.4; // px per frame — tune for pace
+const AUTO_SCROLL_SPEED = 0.4; // px per frame - tune for pace
 const RESUME_DELAY = 2500; // ms after user stops interacting before auto-scroll resumes
 
 export default function Testimonials() {

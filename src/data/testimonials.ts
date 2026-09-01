@@ -6,7 +6,7 @@ export type Testimonial = {
   position: string;
 };
 
-// Static for now — when this moves to a CMS/admin panel, this array gets
+// Static for now - when this moves to a CMS/admin panel, this array gets
 // replaced by a fetch call. Nothing else in the site needs to change,
 // since both the homepage marquee and /testimonials page import from here.
 export const TESTIMONIALS: Testimonial[] = [

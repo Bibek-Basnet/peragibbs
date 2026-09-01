@@ -7,7 +7,7 @@ import TestimonialCard from "@/components/testimonials/TestimonialCard";
 export const metadata: Metadata = {
   title: "Testimonials",
   description:
-    "Hear from the athletes and teams Pera Gibbs has coached — from Black Ferns Sevens and All Blacks to club and youth level athletes.",
+    "Hear from the athletes and teams Pera Gibbs has coached - from Black Ferns Sevens and All Blacks to club and youth level athletes.",
 };
 
 export default function TestimonialsPage() {
