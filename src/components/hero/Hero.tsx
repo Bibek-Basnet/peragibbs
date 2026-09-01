@@ -128,10 +128,10 @@ export default function Hero() {
             mt-5, mt-4) stay untouched, so their gaps remain equal. */}
         <div className="-translate-y-16 sm:translate-y-0">
           <div ref={maskRef} className="max-w-2xl md:max-w-3xl">
-            <h1
-              ref={headlineRef}
-              className="font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy"
-            >
+           <h1
+  ref={headlineRef}
+  className="-translate-y-2 font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy sm:translate-y-0"
+>
               <span className="flex flex-wrap gap-x-3 md:gap-x-4">
                 <MaskedWord>Move</MaskedWord>
                 <MaskedWord>well,</MaskedWord>
