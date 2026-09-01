@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,12 +13,21 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const AUTO_SCROLL_SPEED = 0.4; // px per frame — tune for pace
+const RESUME_DELAY = 2500; // ms after user stops interacting before auto-scroll resumes
+
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const tweenRef = useRef<gsap.core.Tween | null>(null);
+
+  const rafRef = useRef<number | null>(null);
+  const pausedRef = useRef(false);
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartScrollRef = useRef(0);
 
   useGSAP(
     () => {
@@ -37,18 +46,71 @@ export default function Testimonials() {
         { opacity: 1, y: 0, duration: 0.7 },
         "-=0.25"
       );
-
-      if (trackRef.current) {
-        tweenRef.current = gsap.to(trackRef.current, {
-          xPercent: -50,
-          duration: 55,
-          ease: "none",
-          repeat: -1,
-        });
-      }
     },
     { scope: sectionRef }
   );
+
+  // Auto-scroll loop, driven by real scrollLeft so it coexists with
+  // native touch/trackpad scroll and click-drag on the same element.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const tick = () => {
+      if (!pausedRef.current && !isDraggingRef.current) {
+        track.scrollLeft += AUTO_SCROLL_SPEED;
+
+        // Seamless loop: content is rendered twice back-to-back, so once
+        // we've scrolled past the first copy's width, jump back by that
+        // exact amount with no visible seam.
+        const halfWidth = track.scrollWidth / 2;
+        if (track.scrollLeft >= halfWidth) {
+          track.scrollLeft -= halfWidth;
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  function pauseAutoScroll() {
+    pausedRef.current = true;
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+  }
+
+  function scheduleResume() {
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, RESUME_DELAY);
+  }
+
+  // Click-and-drag support for desktop (mouse users, who have no native
+  // horizontal touch gesture)
+  function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
+    const track = trackRef.current;
+    if (!track) return;
+    isDraggingRef.current = true;
+    pauseAutoScroll();
+    dragStartXRef.current = e.clientX;
+    dragStartScrollRef.current = track.scrollLeft;
+    track.setPointerCapture(e.pointerId);
+  }
+
+  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!isDraggingRef.current || !trackRef.current) return;
+    const dx = e.clientX - dragStartXRef.current;
+    trackRef.current.scrollLeft = dragStartScrollRef.current - dx;
+  }
+
+  function handlePointerUp() {
+    isDraggingRef.current = false;
+    scheduleResume();
+  }
 
   return (
     <section id="testimonials" ref={sectionRef} className="bg-ink py-24 md:py-32">
@@ -84,17 +146,27 @@ export default function Testimonials() {
       </div>
 
       <div
-        className="relative mt-14 overflow-hidden md:mt-16"
+        className="relative mt-14 md:mt-16"
         style={{
           maskImage:
             "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
           WebkitMaskImage:
             "linear-gradient(90deg, transparent, black 6%, black 94%, transparent)",
         }}
-        onMouseEnter={() => tweenRef.current?.pause()}
-        onMouseLeave={() => tweenRef.current?.play()}
       >
-        <div ref={trackRef} className="flex w-max gap-6 px-6 md:gap-8 md:px-16">
+        <div
+          ref={trackRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerLeave={handlePointerUp}
+          onMouseEnter={pauseAutoScroll}
+          onMouseLeave={scheduleResume}
+          onTouchStart={pauseAutoScroll}
+          onTouchEnd={scheduleResume}
+          className="scrollbar-hide flex w-full cursor-grab gap-6 overflow-x-auto px-6 active:cursor-grabbing md:gap-8 md:px-16"
+          style={{ scrollBehavior: "auto" }}
+        >
           {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
             <TestimonialCard
               key={`${t.name}-${i}`}
