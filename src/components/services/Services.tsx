@@ -88,7 +88,7 @@ const STEPS = [
   },
   {
     title: "Start training",
-    desc: "Your program lands on day one of your block.",
+    desc: "Once payment is received your personalised program will be acessable via the app Teambuildr.",
   },
 ];
 

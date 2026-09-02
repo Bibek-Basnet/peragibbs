@@ -167,13 +167,13 @@ export default function Testimonials() {
           className="scrollbar-hide flex w-full cursor-grab gap-6 overflow-x-auto px-6 active:cursor-grabbing md:gap-8 md:px-16"
           style={{ scrollBehavior: "auto" }}
         >
-          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
-            <TestimonialCard
-              key={`${t.name}-${i}`}
-              testimonial={t}
-              className="h-[480px] w-[600px] shrink-0 md:h-[520px] md:w-[680px]"
-            />
-          ))}
+         {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+  <TestimonialCard
+    key={`${t.name}-${i}`}
+    testimonial={t}
+    className="w-[85vw] max-w-[420px] shrink-0 sm:h-[480px] sm:w-[600px] sm:max-w-none md:h-[520px] md:w-[680px]"
+  />
+))}
         </div>
       </div>
     </section>

@@ -17,9 +17,9 @@ const FAQS = [
       "Online coaching runs on a 12-week minimum commitment, then moves to a rolling monthly subscription that you can cancel any time.",
   },
   {
-    question: "Can I pay monthly instead of upfront?",
+    question: "What are the different payment options?",
     answer:
-      "Yes - both options are available. You can pay weekly on a rolling basis, or pay the full 12-week block upfront.",
+      "This is either done weekly or the full 12 week block can be paid in full upfront.",
   },
   {
     question: "What's the difference between the coaching tiers?",

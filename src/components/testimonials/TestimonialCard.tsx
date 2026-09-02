@@ -14,14 +14,14 @@ export default function TestimonialCard({
   const t = testimonial;
   return (
     <div
-      className={`flex overflow-hidden rounded-2xl border border-paper/10 bg-panel ${className}`}
+      className={`flex flex-col rounded-2xl border border-paper/10 bg-panel sm:flex-row sm:overflow-hidden ${className}`}
     >
-      <div className="relative w-[42%] shrink-0">
+      <div className="relative h-56 w-full shrink-0 overflow-hidden rounded-t-2xl sm:h-auto sm:w-[42%] sm:rounded-none">
         <Image
           src={t.photo}
           alt={t.name}
           fill
-          sizes="(max-width: 768px) 42vw, 300px"
+          sizes="(max-width: 640px) 100vw, 300px"
           className="object-cover"
           style={{ objectPosition: t.position }}
         />
@@ -30,7 +30,7 @@ export default function TestimonialCard({
 
       <div className="flex flex-1 flex-col justify-between p-6 md:p-7">
         <div>
-          <Quotes size={22} weight="fill" className="text-navy" />
+          <Quotes size={22} weight="fill" className="text-ember" />
           <p className="mt-3 font-body text-sm leading-relaxed text-paper/85 md:text-base">
             &ldquo;{t.quote}&rdquo;
           </p>
