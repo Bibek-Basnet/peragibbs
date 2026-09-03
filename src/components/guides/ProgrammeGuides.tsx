@@ -16,7 +16,7 @@ const GUIDES = [
     tag: "Team Sport Edition",
     title: "Rugby, netball & team athletes.",
     description:
-      "TeamBuildr setup, your 12-week block breakdown, the PGMVMT Big Five testing benchmarks — Bronco, Broad Jump, Push Up, Bench Press, Trap Bar Deadlift, Chin Up — RIR/RPE load guidance, and speed & conditioning protocols.",
+      "TeamBuildr setup, your 12-week block breakdown, the PGMVMT Big Five testing benchmarks - Bronco, Broad Jump, Push Up, Bench Press, Trap Bar Deadlift, Chin Up - RIR/RPE load guidance, and speed & conditioning protocols.",
     href: "/guides/pdf1.pdf",
     image: "/gallery/guide1.jpg",
     position: "50% 30%",
