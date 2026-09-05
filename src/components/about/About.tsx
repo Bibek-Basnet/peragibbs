@@ -130,7 +130,7 @@ export default function About() {
             ref={headingRef}
             className="font-head text-4xl font-semibold uppercase leading-[1.05] tracking-tightest text-navy md:text-5xl"
           >
-            Built on real experience.
+            Kia ora, I'm Pera.
           </h2>
 
           <p
@@ -139,10 +139,10 @@ export default function About() {
             }}
             className="mt-7 font-body text-lg leading-relaxed text-ink/75"
           >
-            Pera brings a background in high-performance sport to every
-            session, translating elite-level strength and conditioning
-            principles into programs built specifically for developing
-            athletes.
+           
+A qualified strength and conditioning coach from Gisborne, now based in Auckland, NZ.  I have over 10 years of experience in high-performance sport and have coached some of the best athletes New Zealand has produced. 
+Health and fitness isn't just my profession - it's fundamental to how I live. Injury unfortunately ended my own Rugby playing journey early, but it strengthened my passion to apply what I've learned to every athlete and team I work with. I try to lead by example in everything I do - applying the same training and science on myself, so I understand exactly what I'm asking of my athletes. 
+These days, my focus is youth development - building the physical foundation and sport-specific skill that carries an athlete from junior level toward representative and national pathways.
           </p>
 
           <p
