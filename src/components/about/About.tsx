@@ -139,22 +139,26 @@ export default function About() {
             }}
             className="mt-7 font-body text-lg leading-relaxed text-ink/75"
           >
-           
-A qualified strength and conditioning coach from Gisborne, now based in Auckland, NZ.  I have over 10 years of experience in high-performance sport and have coached some of the best athletes New Zealand has produced. 
-Health and fitness isn't just my profession - it's fundamental to how I live. Injury unfortunately ended my own Rugby playing journey early, but it strengthened my passion to apply what I've learned to every athlete and team I work with. I try to lead by example in everything I do - applying the same training and science on myself, so I understand exactly what I'm asking of my athletes. 
-These days, my focus is youth development - building the physical foundation and sport-specific skill that carries an athlete from junior level toward representative and national pathways.
+            A qualified strength and conditioning coach from Gisborne, now
+            based in Auckland, NZ. I have over 10 years of experience in
+            high-performance sport and have coached some of the best athletes
+            New Zealand has produced.
+            <br />
+            <br />
+            Health and fitness isn't just my profession - it's fundamental to
+            how I live. Injury unfortunately ended my own rugby playing journey
+            early, but it strengthened my passion to apply what I've learned to
+            every athlete and team I work with. I try to lead by example in
+            everything I do - applying the same training and science on myself,
+            so I understand exactly what I'm asking of my athletes.
+            <br />
+            <br />
+            These days, my focus is youth development - building the physical
+            foundation and sport-specific skill that carries an athlete from
+            junior level toward representative and national pathways.
           </p>
 
-          <p
-            ref={(el) => {
-              if (el) paraRefs.current[1] = el;
-            }}
-            className="mt-4 font-body text-lg leading-relaxed text-ink/75"
-          >
-            His focus is on youth development - building the physical
-            foundation and rugby-specific skill that carries an athlete from
-            club level toward representative and national pathways.
-          </p>
+          {/* Removed the duplicate second paragraph */}
 
           <div
             ref={credRef}
