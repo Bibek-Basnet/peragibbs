@@ -51,8 +51,14 @@ const INTERESTS = [
 
 const STEP_META = [
   { title: "Who's this for?", subtitle: "So Pera knows who he's talking to." },
-  { title: "What's the focus?", subtitle: "Helps tailor advice when he follows up." },
-  { title: "Almost there.", subtitle: "One click and your guide is on its way." },
+  {
+    title: "What's the focus?",
+    subtitle: "Helps tailor advice when he follows up.",
+  },
+  {
+    title: "Almost there.",
+    subtitle: "One click and your guide is on its way.",
+  },
 ];
 
 export default function LeadCaptureModal({
@@ -65,7 +71,9 @@ export default function LeadCaptureModal({
   const isOpen = guide !== null;
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormState>(INITIAL_STATE);
-  const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "done" | "error"
+  >("idle");
 
   const backdropRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -84,17 +92,21 @@ export default function LeadCaptureModal({
       if (!backdropRef.current || !panelRef.current) return;
       if (isOpen) {
         document.body.style.overflow = "hidden";
-        gsap.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        gsap.fromTo(
+          backdropRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.3 },
+        );
         gsap.fromTo(
           panelRef.current,
           { opacity: 0, y: 24, scale: 0.97 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" },
         );
       } else {
         document.body.style.overflow = "";
       }
     },
-    { dependencies: [isOpen] }
+    { dependencies: [isOpen] },
   );
 
   useGSAP(
@@ -103,10 +115,10 @@ export default function LeadCaptureModal({
       gsap.fromTo(
         stepRef.current,
         { opacity: 0, x: 16 },
-        { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }
+        { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" },
       );
     },
-    { dependencies: [step] }
+    { dependencies: [step] },
   );
 
   if (!isOpen || !guide) return null;
@@ -154,7 +166,8 @@ export default function LeadCaptureModal({
     }
   }
 
-  const step1Valid = form.name.trim().length > 1 && /\S+@\S+\.\S+/.test(form.email);
+  const step1Valid =
+    form.name.trim().length > 1 && /\S+@\S+\.\S+/.test(form.email);
   const step2Valid = form.role !== "" && form.interest !== "";
   const meta = STEP_META[step - 1];
 
@@ -172,11 +185,12 @@ export default function LeadCaptureModal({
         aria-modal="true"
         className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-paper/10 bg-panel shadow-2xl shadow-ink/40"
       >
-        {/* Top accent bar - fills with progress */}
         <div className="h-1 w-full bg-paper/10">
           <div
             className="h-full bg-navy transition-all duration-500 ease-out"
-            style={{ width: status === "done" ? "100%" : `${(step / 3) * 100}%` }}
+            style={{
+              width: status === "done" ? "100%" : `${(step / 3) * 100}%`,
+            }}
           />
         </div>
 
@@ -199,9 +213,8 @@ export default function LeadCaptureModal({
                 You&rsquo;re all set.
               </p>
               <p className="mt-2 max-w-xs font-body text-sm leading-relaxed text-paper/60">
-                Your guide is downloading now. Pera may reach out personally
-                to see how your training&rsquo;s going - keep an eye on your
-                inbox.
+                Your guide is downloading now. Pera may reach out personally to
+                see how your training&rsquo;s going - keep an eye on your inbox.
               </p>
               <button
                 type="button"
@@ -213,7 +226,6 @@ export default function LeadCaptureModal({
             </div>
           ) : (
             <>
-              {/* Guide reminder */}
               <div className="flex items-center gap-2.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-navy" />
                 <p className="font-head text-[11px] font-semibold uppercase tracking-[0.2em] text-navy">
@@ -299,8 +311,14 @@ export default function LeadCaptureModal({
                           >
                             <Icon
                               size={20}
-                              weight={form.interest === label ? "fill" : "light"}
-                              className={form.interest === label ? "text-navy" : "text-paper/40"}
+                              weight={
+                                form.interest === label ? "fill" : "light"
+                              }
+                              className={
+                                form.interest === label
+                                  ? "text-navy"
+                                  : "text-paper/40"
+                              }
                             />
                             {label}
                           </button>
@@ -349,7 +367,6 @@ export default function LeadCaptureModal({
                 )}
               </div>
 
-              {/* Footer nav */}
               <div className="mt-8 flex items-center justify-between">
                 {step > 1 ? (
                   <button

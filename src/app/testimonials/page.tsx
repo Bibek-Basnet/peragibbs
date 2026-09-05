@@ -30,9 +30,13 @@ export default function TestimonialsPage() {
         </h1>
 
         <div className="mt-16 grid grid-cols-1 gap-6 md:mt-20 md:grid-cols-2">
-        {TESTIMONIALS.map((t) => (
-  <TestimonialCard key={t.name} testimonial={t} className="w-full sm:h-[460px]" />
-))}
+          {TESTIMONIALS.map((t) => (
+            <TestimonialCard
+              key={t.name}
+              testimonial={t}
+              className="w-full sm:h-[460px]"
+            />
+          ))}
         </div>
       </div>
     </main>

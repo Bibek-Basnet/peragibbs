@@ -52,7 +52,6 @@ export default function CTABand() {
         ref={sectionRef}
         className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-ink px-8 py-14 md:px-14 md:py-16"
       >
-        {/* Decorative dot-grid texture, right side */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 opacity-[0.15] md:block"

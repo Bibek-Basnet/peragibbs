@@ -13,8 +13,8 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const AUTO_SCROLL_SPEED = 0.4; // px per frame - tune for pace
-const RESUME_DELAY = 2500; // ms after user stops interacting before auto-scroll resumes
+const AUTO_SCROLL_SPEED = 0.4;
+const RESUME_DELAY = 2500;
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -39,19 +39,17 @@ export default function Testimonials() {
       tl.fromTo(
         eyebrowRef.current,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.5 }
+        { opacity: 1, y: 0, duration: 0.5 },
       ).fromTo(
         headingRef.current,
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.7 },
-        "-=0.25"
+        "-=0.25",
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
-  // Auto-scroll loop, driven by real scrollLeft so it coexists with
-  // native touch/trackpad scroll and click-drag on the same element.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -60,9 +58,6 @@ export default function Testimonials() {
       if (!pausedRef.current && !isDraggingRef.current) {
         track.scrollLeft += AUTO_SCROLL_SPEED;
 
-        // Seamless loop: content is rendered twice back-to-back, so once
-        // we've scrolled past the first copy's width, jump back by that
-        // exact amount with no visible seam.
         const halfWidth = track.scrollWidth / 2;
         if (track.scrollLeft >= halfWidth) {
           track.scrollLeft -= halfWidth;
@@ -89,8 +84,6 @@ export default function Testimonials() {
     }, RESUME_DELAY);
   }
 
-  // Click-and-drag support for desktop (mouse users, who have no native
-  // horizontal touch gesture)
   function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
     const track = trackRef.current;
     if (!track) return;
@@ -113,7 +106,11 @@ export default function Testimonials() {
   }
 
   return (
-    <section id="testimonials" ref={sectionRef} className="bg-ink py-24 md:py-32">
+    <section
+      id="testimonials"
+      ref={sectionRef}
+      className="bg-ink py-24 md:py-32"
+    >
       <div className="mx-auto max-w-7xl px-6 md:px-16">
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-end md:justify-between md:text-left">
           <div>
@@ -167,13 +164,13 @@ export default function Testimonials() {
           className="scrollbar-hide flex w-full cursor-grab gap-6 overflow-x-auto px-6 active:cursor-grabbing md:gap-8 md:px-16"
           style={{ scrollBehavior: "auto" }}
         >
-         {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
-  <TestimonialCard
-    key={`${t.name}-${i}`}
-    testimonial={t}
-    className="w-[85vw] max-w-[420px] shrink-0 sm:h-[480px] sm:w-[600px] sm:max-w-none md:h-[520px] md:w-[680px]"
-  />
-))}
+          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+            <TestimonialCard
+              key={`${t.name}-${i}`}
+              testimonial={t}
+              className="w-[85vw] max-w-[420px] shrink-0 sm:h-[480px] sm:w-[600px] sm:max-w-none md:h-[520px] md:w-[680px]"
+            />
+          ))}
         </div>
       </div>
     </section>

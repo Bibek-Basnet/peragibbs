@@ -27,46 +27,51 @@ export default function MobileMenu({
   const footerRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Set up the timeline once
   useGSAP(() => {
     if (!panelRef.current || !backdropRef.current) return;
 
     const tl = gsap.timeline({ paused: true });
-    
-    // Remove the hidden class and set initial display states
-    tl.set(backdropRef.current, { 
-      display: "block", 
-      opacity: 0 
+
+    tl.set(backdropRef.current, {
+      display: "block",
+      opacity: 0,
     })
-    .set(panelRef.current, { 
-      display: "flex", 
-      xPercent: 100 
-    })
-    .to(backdropRef.current, {
-      opacity: 1,
-      duration: 0.4,
-      ease: "power2.out"
-    })
-    .to(panelRef.current, {
-      xPercent: 0,
-      duration: 0.55,
-      ease: "power4.out"
-    }, "<")
-    .fromTo(
-      linksRef.current?.children ?? [],
-      { x: 24, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.45, stagger: 0.05, ease: "power3.out" },
-      "-=0.3"
-    )
-    .to(footerRef.current, {
-      opacity: 1,
-      duration: 0.4,
-      ease: "power2.out"
-    }, "-=0.2");
+      .set(panelRef.current, {
+        display: "flex",
+        xPercent: 100,
+      })
+      .to(backdropRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      })
+      .to(
+        panelRef.current,
+        {
+          xPercent: 0,
+          duration: 0.55,
+          ease: "power4.out",
+        },
+        "<",
+      )
+      .fromTo(
+        linksRef.current?.children ?? [],
+        { x: 24, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.45, stagger: 0.05, ease: "power3.out" },
+        "-=0.3",
+      )
+      .to(
+        footerRef.current,
+        {
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        },
+        "-=0.2",
+      );
 
     tlRef.current = tl;
 
-    // Ensure elements start hidden
     gsap.set(backdropRef.current, { display: "none", opacity: 0 });
     gsap.set(panelRef.current, { display: "none", xPercent: 100 });
 
@@ -75,18 +80,17 @@ export default function MobileMenu({
     };
   }, []);
 
-  // Control the timeline based on isOpen
   useEffect(() => {
     const tl = tlRef.current;
     if (!tl) return;
 
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      // Reset and play forward
+
       tl.play();
     } else {
       document.body.style.overflow = "";
-      // Reverse the animation
+
       tl.reverse();
     }
   }, [isOpen]);
@@ -97,13 +101,11 @@ export default function MobileMenu({
         ref={backdropRef}
         onClick={onClose}
         className="fixed inset-0 z-40 bg-ink/70 backdrop-blur-sm md:hidden"
-        // Remove style={{ opacity: 0 }} - GSAP handles this
       />
 
       <div
         ref={panelRef}
         className="fixed inset-y-0 right-0 z-50 w-[85%] max-w-sm flex-col bg-ink md:hidden"
-        // Remove style={{ transform: "translateX(100%)" }} - GSAP handles this
       >
         <div className="flex items-center justify-between border-b border-paper/10 px-6 py-5">
           <span className="font-head text-xs font-semibold tracking-widest text-grey">
@@ -141,17 +143,17 @@ export default function MobileMenu({
           <div
             ref={footerRef}
             className="mt-8 flex flex-col gap-6 border-t border-paper/10 pt-6"
-            style={{ opacity: 0 }} // Start hidden
+            style={{ opacity: 0 }}
           >
             <Link
-  href="https://form.jotform.com/261601330383043"
-  target="_blank"
-  rel="noreferrer"
-  onClick={onClose}
-  className="flex items-center justify-center rounded-full border border-paper bg-paper py-4 font-head text-[15px] font-semibold uppercase tracking-wide text-ink"
->
-  Apply Now
-</Link>
+              href="https://form.jotform.com/261601330383043"
+              target="_blank"
+              rel="noreferrer"
+              onClick={onClose}
+              className="flex items-center justify-center rounded-full border border-paper bg-paper py-4 font-head text-[15px] font-semibold uppercase tracking-wide text-ink"
+            >
+              Apply Now
+            </Link>
 
             <div className="flex items-center justify-between">
               <a

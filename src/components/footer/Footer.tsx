@@ -23,7 +23,7 @@ export default function Footer() {
     <footer className="bg-ink">
       <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
         <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr_1fr] md:gap-8">
-          {/* Brand */}
+          
           <div>
             <Link href="/" className="relative block h-8 w-32 md:h-9 md:w-36">
               <Image
@@ -48,7 +48,6 @@ export default function Footer() {
             </Link>
           </div>
 
-          {/* Navigate */}
           <div>
             <p className="mb-5 font-head text-xs font-semibold uppercase tracking-widest text-paper/40">
               Navigate
@@ -62,7 +61,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Get in touch */}
           <div>
             <p className="mb-5 font-head text-xs font-semibold uppercase tracking-widest text-paper/40">
               Get in touch
@@ -102,7 +100,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-14 flex flex-col gap-4 border-t border-paper/10 pt-6 font-body text-xs text-paper/40 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Pera Gibbs Movement. All rights reserved.</p>
 

@@ -5,14 +5,25 @@ import { useState, type FormEvent, type ReactNode } from "react";
 type Role = "athlete" | "parent" | "";
 
 const STEPS = [
-  { title: "Tell me about you", body: "A couple of details on where you're at and what you're chasing." },
-  { title: "I'll follow up personally", body: "No forms disappearing into a queue - you'll hear from me directly." },
-  { title: "We book your first call", body: "A quick chat to map out the right program before anything's signed." },
+  {
+    title: "Tell me about you",
+    body: "A couple of details on where you're at and what you're chasing.",
+  },
+  {
+    title: "I'll follow up personally",
+    body: "No forms disappearing into a queue - you'll hear from me directly.",
+  },
+  {
+    title: "We book your first call",
+    body: "A quick chat to map out the right program before anything's signed.",
+  },
 ];
 
 export default function ContactForm() {
   const [role, setRole] = useState<Role>("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,7 +35,8 @@ export default function ContactForm() {
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
       role,
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement)
+        .value,
     };
 
     try {
@@ -45,19 +57,22 @@ export default function ContactForm() {
   return (
     <section id="contact" className="bg-paper py-24 md:py-32">
       <div className="mx-auto grid max-w-6xl gap-16 px-6 md:grid-cols-[0.85fr_1fr] md:gap-24 md:px-16">
-        {/* Left: framing copy + how-it-works, fills the column naturally */}
         <div className="flex flex-col justify-between">
           <div>
             <p className="mb-4 font-head text-xs font-semibold uppercase tracking-widest text-grey">
               Get in touch
             </p>
             <h2 className="font-head text-4xl font-semibold uppercase leading-[1] tracking-tightest text-ink md:text-[2.75rem]">
-               <span className="text-navy"> Let&apos;s build<br /> your program.</span>
+              <span className="text-navy">
+                {" "}
+                Let&apos;s build
+                <br /> your program.
+              </span>
             </h2>
             <p className="mt-6 max-w-sm font-body text-base leading-relaxed text-grey">
-              Tell me a bit about yourself and I&apos;ll follow up personally
-              to talk through the right path - whether that&apos;s you as
-              the athlete, or a parent getting things started.
+              Tell me a bit about yourself and I&apos;ll follow up personally to
+              talk through the right path - whether that&apos;s you as the
+              athlete, or a parent getting things started.
             </p>
 
             <ol className="mt-10 space-y-6">
@@ -67,8 +82,12 @@ export default function ContactForm() {
                     {i + 1}
                   </span>
                   <div>
-                    <p className="font-head text-sm font-semibold text-ink">{step.title}</p>
-                    <p className="mt-1 font-body text-sm leading-relaxed text-grey">{step.body}</p>
+                    <p className="font-head text-sm font-semibold text-ink">
+                      {step.title}
+                    </p>
+                    <p className="mt-1 font-body text-sm leading-relaxed text-grey">
+                      {step.body}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -82,13 +101,15 @@ export default function ContactForm() {
             <SocialIcon href="https://wa.me/64220470407" label="WhatsApp">
               <WhatsAppIcon />
             </SocialIcon>
-            <SocialIcon href="https://www.instagram.com/peragibbs_mvmt/" label="Instagram">
+            <SocialIcon
+              href="https://www.instagram.com/peragibbs_mvmt/"
+              label="Instagram"
+            >
               <InstagramIcon />
             </SocialIcon>
           </div>
         </div>
 
-        {/* Right: the form */}
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-6 rounded-2xl border border-ink/10 bg-white p-8 shadow-[0_1px_3px_rgba(10,10,10,0.06),0_12px_32px_-16px_rgba(10,10,10,0.15)] sm:p-10"
@@ -217,7 +238,13 @@ function SocialIcon({
 
 function MailIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="m3 7 9 6 9-6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>

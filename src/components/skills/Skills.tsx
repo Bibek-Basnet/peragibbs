@@ -18,15 +18,18 @@ const SKILLS = [
     highlights: [
       {
         title: "Periodised programming",
-        detail: "Structured across macro and micro training blocks to build load progressively without burnout.",
+        detail:
+          "Structured across macro and micro training blocks to build load progressively without burnout.",
       },
       {
         title: "Load management",
-        detail: "Volume and intensity tailored to each athlete's training age and recovery capacity.",
+        detail:
+          "Volume and intensity tailored to each athlete's training age and recovery capacity.",
       },
       {
         title: "Gym-based strength",
-        detail: "Foundational lifts and accessory work built for long-term strength development.",
+        detail:
+          "Foundational lifts and accessory work built for long-term strength development.",
       },
     ],
   },
@@ -38,15 +41,18 @@ const SKILLS = [
     highlights: [
       {
         title: "Catch & pass technical development",
-        detail: "Handling and passing mechanics broken down and rebuilt for accuracy under pressure.",
+        detail:
+          "Handling and passing mechanics broken down and rebuilt for accuracy under pressure.",
       },
       {
         title: "Kicking",
-        detail: "All forms specific to your game - technique built around your position and role.",
+        detail:
+          "All forms specific to your game - technique built around your position and role.",
       },
       {
         title: "Off-load development",
-        detail: "Contact-based off-loading technique trained for timing, control, and decision-making.",
+        detail:
+          "Contact-based off-loading technique trained for timing, control, and decision-making.",
       },
     ],
   },
@@ -58,15 +64,18 @@ const SKILLS = [
     highlights: [
       {
         title: "Sprint mechanics",
-        detail: "Acceleration and top-speed technique broken down and rebuilt for efficiency.",
+        detail:
+          "Acceleration and top-speed technique broken down and rebuilt for efficiency.",
       },
       {
         title: "Change of direction",
-        detail: "Deceleration control and cutting technique for safer, faster direction changes.",
+        detail:
+          "Deceleration control and cutting technique for safer, faster direction changes.",
       },
       {
         title: "Reactive agility",
-        detail: "Speed and agility trained against live, game-like stimulus rather than fixed patterns.",
+        detail:
+          "Speed and agility trained against live, game-like stimulus rather than fixed patterns.",
       },
     ],
   },
@@ -78,15 +87,18 @@ const SKILLS = [
     highlights: [
       {
         title: "Return to play",
-        detail: "Structured, staged progressions that rebuild capacity safely after injury.",
+        detail:
+          "Structured, staged progressions that rebuild capacity safely after injury.",
       },
       {
         title: "Movement screening",
-        detail: "Regular screening to catch and correct issues before they become injuries.",
+        detail:
+          "Regular screening to catch and correct issues before they become injuries.",
       },
       {
         title: "Ongoing mobility",
-        detail: "Joint health and mobility work built into every training block, not bolted on.",
+        detail:
+          "Joint health and mobility work built into every training block, not bolted on.",
       },
     ],
   },
@@ -98,15 +110,18 @@ const SKILLS = [
     highlights: [
       {
         title: "Long-term planning",
-        detail: "Age-appropriate development frameworks that build a base before specialising.",
+        detail:
+          "Age-appropriate development frameworks that build a base before specialising.",
       },
       {
         title: "Physical literacy",
-        detail: "Fundamental movement competency prioritised before sport-specific demands.",
+        detail:
+          "Fundamental movement competency prioritised before sport-specific demands.",
       },
       {
         title: "Clear communication",
-        detail: "Coaching language and delivery matched to the athlete's age and stage.",
+        detail:
+          "Coaching language and delivery matched to the athlete's age and stage.",
       },
     ],
   },
@@ -118,16 +133,19 @@ const SKILLS = [
     highlights: [
       {
         title: "Weekly tracking",
-        detail: "Available on the Advanced tier - load and readiness monitored every week to guide programming decisions.",
+        detail:
+          "Available on the Advanced tier - load and readiness monitored every week to guide programming decisions.",
         badge: "Advanced tier",
       },
       {
         title: "Progress reviews",
-        detail: "Regular check-ins that keep athletes and programming aligned to real progress.",
+        detail:
+          "Regular check-ins that keep athletes and programming aligned to real progress.",
       },
       {
         title: "Data-led adjustments",
-        detail: "Programming shifts based on how the athlete is actually responding, not assumptions.",
+        detail:
+          "Programming shifts based on how the athlete is actually responding, not assumptions.",
       },
     ],
   },
@@ -154,12 +172,12 @@ function SkillRow({
     tl.fromTo(
       rowRef.current,
       { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.6 }
+      { opacity: 1, y: 0, duration: 0.6 },
     ).fromTo(
       listRef.current?.children ?? [],
       { opacity: 0, y: 12 },
       { opacity: 1, y: 0, duration: 0.45, stagger: 0.08 },
-      "-=0.35"
+      "-=0.35",
     );
   }, [index]);
 
@@ -168,7 +186,6 @@ function SkillRow({
       ref={rowRef}
       className="grid grid-cols-1 gap-8 border-b border-ink/10 py-10 last:border-0 md:grid-cols-[280px_1fr] md:gap-16 md:py-12"
     >
-      {/* Left: identity with subtle number */}
       <div className="flex items-start gap-4">
         <span className="font-head text-sm font-semibold text-navy/20">
           {String(index + 1).padStart(2, "0")}
@@ -186,7 +203,6 @@ function SkillRow({
         </div>
       </div>
 
-      {/* Right: highlights with subtle cards */}
       <ul ref={listRef} className="space-y-2">
         {skill.highlights.map((item) => (
           <li
@@ -231,15 +247,15 @@ export default function Skills() {
       tl.fromTo(
         eyebrowRef.current,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.5 }
+        { opacity: 1, y: 0, duration: 0.5 },
       ).fromTo(
         headingRef.current,
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.7 },
-        "-=0.25"
+        "-=0.25",
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (

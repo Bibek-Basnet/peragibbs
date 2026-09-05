@@ -10,7 +10,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Confirm this with Pera before shipping - currently placeholder assumptions.
 const UPFRONT_DISCOUNT = 0.08;
 const ADVANCED_SPOTS_LEFT = 3;
 
@@ -67,7 +66,6 @@ const TIERS: Tier[] = [
     bestFor:
       "Athletes chasing a specific performance target or needing specialised support (e.g. injury rehab).",
     treatment: "dark-accent",
-    
   },
 ];
 
@@ -111,7 +109,11 @@ const COMPARE_GROUPS: CompareGroup[] = [
     rows: [
       {
         label: "Programming style",
-        values: ["Single discipline", "Strength + conditioning", "Fully tailored"],
+        values: [
+          "Single discipline",
+          "Strength + conditioning",
+          "Fully tailored",
+        ],
       },
       {
         label: "Program adjustments",
@@ -123,7 +125,10 @@ const COMPARE_GROUPS: CompareGroup[] = [
     title: "Support",
     rows: [
       { label: "Weekly check-ins", values: [false, false, true] },
-      { label: "Injury rehab / specific targets", values: [false, false, true] },
+      {
+        label: "Injury rehab / specific targets",
+        values: [false, false, true],
+      },
     ],
   },
 ];
@@ -171,18 +176,22 @@ export default function Services() {
       });
 
       introTl
-        .fromTo(eyebrowRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 })
+        .fromTo(
+          eyebrowRef.current,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5 },
+        )
         .fromTo(
           headingRef.current,
           { opacity: 0, y: 24 },
           { opacity: 1, y: 0, duration: 0.7 },
-          "-=0.25"
+          "-=0.25",
         )
         .fromTo(
           noticeRef.current,
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.6 },
-          "-=0.35"
+          "-=0.35",
         );
 
       gsap.fromTo(
@@ -195,7 +204,7 @@ export default function Services() {
           stagger: 0.12,
           ease: "power3.out",
           scrollTrigger: { trigger: cardsRef.current, start: "top 80%" },
-        }
+        },
       );
 
       gsap.set(stepsLineRef.current, { scaleX: 0 });
@@ -236,7 +245,7 @@ export default function Services() {
           stagger: 0.12,
           ease: "power3.out",
           scrollTrigger: { trigger: stepsWrapRef.current, start: "top 78%" },
-        }
+        },
       );
 
       gsap.fromTo(
@@ -248,10 +257,10 @@ export default function Services() {
           duration: 0.7,
           ease: "power3.out",
           scrollTrigger: { trigger: inPersonRef.current, start: "top 85%" },
-        }
+        },
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   useGSAP(
@@ -265,7 +274,8 @@ export default function Services() {
       TIERS.forEach((tier, i) => {
         const el = priceRefs.current[i];
         if (!el) return;
-        const target = billing === "weekly" ? tier.price : upfrontTotal(tier.price);
+        const target =
+          billing === "weekly" ? tier.price : upfrontTotal(tier.price);
         const counter = { val: priceValues.current[i] };
 
         gsap.to(counter, {
@@ -281,7 +291,7 @@ export default function Services() {
         });
       });
     },
-    { dependencies: [billing], scope: sectionRef }
+    { dependencies: [billing], scope: sectionRef },
   );
 
   useGSAP(
@@ -302,13 +312,13 @@ export default function Services() {
             onComplete: () => {
               gsap.set(wrap, { height: "auto" });
             },
-          }
+          },
         );
       } else {
         gsap.to(wrap, { height: 0, duration: 0.4, ease: "power3.inOut" });
       }
     },
-    { dependencies: [showCompare], scope: sectionRef }
+    { dependencies: [showCompare], scope: sectionRef },
   );
 
   function setPriceRef(el: HTMLSpanElement | null, i: number) {
@@ -334,14 +344,17 @@ export default function Services() {
             Coaching Offerings
           </p>
           <h2
-  ref={headingRef}
-  className="font-head text-5xl font-black uppercase leading-[0.92] tracking-tightest text-navy md:text-6xl"
->
-  Programs built around you.
-</h2>
+            ref={headingRef}
+            className="font-head text-5xl font-black uppercase leading-[0.92] tracking-tightest text-navy md:text-6xl"
+          >
+            Programs built around you.
+          </h2>
         </div>
 
-        <div ref={noticeRef} className="mx-auto mt-10 flex flex-col items-center gap-4 md:mt-12">
+        <div
+          ref={noticeRef}
+          className="mx-auto mt-10 flex flex-col items-center gap-4 md:mt-12"
+        >
           <div className="relative flex w-full max-w-xs rounded-full border border-ink/10 bg-white p-1">
             <div
               ref={pillRef}
@@ -371,13 +384,17 @@ export default function Services() {
           </div>
           <p className="font-body text-sm text-ink/60">
             {billing === "upfront"
-              ? "12 weeks paid upfront - save " + Math.round(UPFRONT_DISCOUNT * 100) + "% vs. weekly."
+              ? "12 weeks paid upfront - save " +
+                Math.round(UPFRONT_DISCOUNT * 100) +
+                "% vs. weekly."
               : "Rolling weekly billing after a 12-week minimum commitment. Cancel any time."}
           </p>
         </div>
 
-        {/* Cards */}
-        <div ref={cardsRef} className="mx-auto mt-14 grid max-w-6xl gap-6 md:mt-16 md:grid-cols-3 md:gap-6">
+        <div
+          ref={cardsRef}
+          className="mx-auto mt-14 grid max-w-6xl gap-6 md:mt-16 md:grid-cols-3 md:gap-6"
+        >
           {TIERS.map((tier, i) => {
             const isLight = tier.treatment === "light-accent";
 
@@ -416,15 +433,30 @@ export default function Services() {
                   >
                     {"$" + tier.price}
                   </span>
-                  <span className={"font-body text-base " + (isLight ? "text-ink/50" : "text-paper/60")}>
+                  <span
+                    className={
+                      "font-body text-base " +
+                      (isLight ? "text-ink/50" : "text-paper/60")
+                    }
+                  >
                     {billing === "weekly" ? "/week" : "/12 weeks"}
                   </span>
                 </div>
-                <p className={"mt-1 font-body text-sm " + (isLight ? "text-ink/45" : "text-paper/50")}>
+                <p
+                  className={
+                    "mt-1 font-body text-sm " +
+                    (isLight ? "text-ink/45" : "text-paper/50")
+                  }
+                >
                   {"+ " + tier.fee}
                 </p>
 
-                <p className={"mt-6 font-head text-lg font-bold leading-snug " + (isLight ? "text-ink" : "text-paper")}>
+                <p
+                  className={
+                    "mt-6 font-head text-lg font-bold leading-snug " +
+                    (isLight ? "text-ink" : "text-paper")
+                  }
+                >
                   {tier.tagline}
                 </p>
 
@@ -434,7 +466,10 @@ export default function Services() {
                       <Check
                         size={16}
                         weight="bold"
-                        className={"mt-0.5 shrink-0 " + (isLight ? "text-navy" : "text-navy")}
+                        className={
+                          "mt-0.5 shrink-0 " +
+                          (isLight ? "text-navy" : "text-navy")
+                        }
                       />
                       <span
                         className={
@@ -448,9 +483,20 @@ export default function Services() {
                   ))}
                 </ul>
 
-                <div className={"mt-6 border-t pt-5 " + (isLight ? "border-ink/10" : "border-paper/15")}>
-                  <p className={"font-body text-sm leading-relaxed " + (isLight ? "text-ink/55" : "text-paper/60")}>
-                    <span className="font-semibold">Best for:</span> {tier.bestFor}
+                <div
+                  className={
+                    "mt-6 border-t pt-5 " +
+                    (isLight ? "border-ink/10" : "border-paper/15")
+                  }
+                >
+                  <p
+                    className={
+                      "font-body text-sm leading-relaxed " +
+                      (isLight ? "text-ink/55" : "text-paper/60")
+                    }
+                  >
+                    <span className="font-semibold">Best for:</span>{" "}
+                    {tier.bestFor}
                   </p>
                   {tier.treatment === "dark-accent" ? (
                     <p className="mt-2 font-head text-xs font-bold uppercase tracking-widest text-navy">
@@ -460,19 +506,18 @@ export default function Services() {
                 </div>
 
                 <a
-                 
-  href="https://form.jotform.com/261601330383043"
-  target="_blank"
-  rel="noreferrer"
-  className={
-    "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
-    (isLight
-      ? "bg-ink text-paper hover:bg-navy hover:text-paper"
-      : "bg-navy text-ink hover:bg-paper")
-  }
->
-  Apply Now
-</a>
+                  href="https://form.jotform.com/261601330383043"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={
+                    "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
+                    (isLight
+                      ? "bg-ink text-paper hover:bg-navy hover:text-paper"
+                      : "bg-navy text-ink hover:bg-paper")
+                  }
+                >
+                  Apply Now
+                </a>
               </div>
             );
           })}
@@ -500,8 +545,12 @@ export default function Services() {
                   >
                     {i + 1}
                   </div>
-                  <p className="mt-4 font-head text-lg font-bold tracking-tight text-ink">{step.title}</p>
-                  <p className="mt-1.5 font-body text-sm text-ink/60">{step.desc}</p>
+                  <p className="mt-4 font-head text-lg font-bold tracking-tight text-ink">
+                    {step.title}
+                  </p>
+                  <p className="mt-1.5 font-body text-sm text-ink/60">
+                    {step.desc}
+                  </p>
                 </div>
               ))}
             </div>
@@ -531,7 +580,9 @@ export default function Services() {
                   (showCompare ? "text-paper/60" : "text-ink/50")
                 }
               >
-                {showCompare ? "Collapse the table below" : "See every tier side by side"}
+                {showCompare
+                  ? "Collapse the table below"
+                  : "See every tier side by side"}
               </span>
             </span>
             <span
@@ -545,13 +596,23 @@ export default function Services() {
               <CaretDown
                 size={16}
                 weight="bold"
-                className={"transition-transform duration-300 " + (showCompare ? "rotate-180" : "")}
+                className={
+                  "transition-transform duration-300 " +
+                  (showCompare ? "rotate-180" : "")
+                }
               />
             </span>
           </button>
 
-          <div ref={compareWrapRef} className="overflow-hidden" style={{ height: 0 }}>
-            <div ref={compareInnerRef} className="mt-6 overflow-x-auto rounded-2xl border border-ink/10 bg-white">
+          <div
+            ref={compareWrapRef}
+            className="overflow-hidden"
+            style={{ height: 0 }}
+          >
+            <div
+              ref={compareInnerRef}
+              className="mt-6 overflow-x-auto rounded-2xl border border-ink/10 bg-white"
+            >
               <table className="w-full min-w-[560px] border-collapse">
                 <thead>
                   <tr className="border-b border-ink/10">
@@ -563,7 +624,9 @@ export default function Services() {
                         key={tier.name}
                         className={
                           "p-4 text-left font-head text-xs font-bold uppercase tracking-widest " +
-                          (i === RECOMMENDED_INDEX ? "bg-navy/5 text-navy" : "text-ink")
+                          (i === RECOMMENDED_INDEX
+                            ? "bg-navy/5 text-navy"
+                            : "text-ink")
                         }
                       >
                         {tier.name}
@@ -583,7 +646,10 @@ export default function Services() {
                         </td>
                       </tr>
                       {group.rows.map((row) => (
-                        <tr key={row.label} className="border-b border-ink/5 last:border-0">
+                        <tr
+                          key={row.label}
+                          className="border-b border-ink/5 last:border-0"
+                        >
                           <td className="sticky left-0 z-10 bg-white p-4 font-body text-sm text-ink/70">
                             {row.label}
                           </td>
@@ -597,7 +663,11 @@ export default function Services() {
                             >
                               {typeof val === "boolean" ? (
                                 val ? (
-                                  <Check size={16} weight="bold" className="text-navy" />
+                                  <Check
+                                    size={16}
+                                    weight="bold"
+                                    className="text-navy"
+                                  />
                                 ) : (
                                   <span className="text-ink/25">-</span>
                                 )
@@ -630,7 +700,9 @@ export default function Services() {
                 Skills, speed, movement quality, strength and conditioning -
                 tailored to your goals.
               </p>
-              <p className="mt-2 font-body text-sm text-ink/50">Groups of 4+.</p>
+              <p className="mt-2 font-body text-sm text-ink/50">
+                Groups of 4+.
+              </p>
 
               <a
                 href="#contact"
@@ -654,7 +726,9 @@ export default function Services() {
                   <span className="font-head text-2xl font-bold text-ink md:text-3xl">
                     {"$" + option.price}
                   </span>
-                  <span className="mt-1 font-body text-xs text-ink/50">per hour</span>
+                  <span className="mt-1 font-body text-xs text-ink/50">
+                    per hour
+                  </span>
                   <span className="mt-3 font-head text-[11px] font-bold uppercase tracking-widest text-grey">
                     {option.label}
                   </span>

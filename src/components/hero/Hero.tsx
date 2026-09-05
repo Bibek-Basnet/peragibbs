@@ -39,26 +39,30 @@ export default function Hero() {
         ? headlineRef.current.querySelectorAll(".word-inner")
         : [];
 
-      // ---- Initial states ----
       gsap.set(imageWrapRef.current, { scale: 1.08, opacity: 0 });
       gsap.set(wordInners, { yPercent: 120 });
       gsap.set(taglineRef.current, { opacity: 0, y: 10 });
       gsap.set(subRef.current, { opacity: 0, y: 12 });
       gsap.set(ruleRef.current, { scaleX: 0 });
 
-      // ---- Entrance timeline (on load) ----
-      const tl = gsap.timeline({ delay: 0.2, defaults: { ease: "power3.out" } });
+      const tl = gsap.timeline({
+        delay: 0.2,
+        defaults: { ease: "power3.out" },
+      });
       tl.to(imageWrapRef.current, { scale: 1, opacity: 1, duration: 1.6 })
         .to(
           wordInners,
           { yPercent: 0, duration: 0.9, ease: "power4.out", stagger: 0.07 },
-          "-=1.15"
+          "-=1.15",
         )
         .to(taglineRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.5")
-        .to(ruleRef.current, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, "-=0.4")
+        .to(
+          ruleRef.current,
+          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          "-=0.4",
+        )
         .to(subRef.current, { opacity: 1, y: 0, duration: 0.7 }, "-=0.4");
 
-      // ---- Pinned scroll story ----
       tl.eventCallback("onComplete", () => {
         const scrollTl = gsap.timeline({
           defaults: { ease: "power2.in", duration: 1 },
@@ -82,7 +86,7 @@ export default function Hero() {
         ScrollTrigger.refresh();
       });
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
@@ -90,7 +94,10 @@ export default function Hero() {
       ref={sectionRef}
       className="relative h-[100dvh] w-full overflow-hidden bg-ink"
     >
-      <div ref={imageWrapRef} className="absolute inset-0 z-0 will-change-transform">
+      <div
+        ref={imageWrapRef}
+        className="absolute inset-0 z-0 will-change-transform"
+      >
         <Image
           src="/hero3.jpg"
           alt="Pera Gibbs, strength and conditioning coach"
@@ -102,7 +109,6 @@ export default function Hero() {
         />
       </div>
 
-      {/* Top scrim - keeps the fixed navbar legible over bright areas of the photo */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-40 md:h-48"
@@ -112,7 +118,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Bottom scrim - grounds the headline/subtext over the shoulders */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[42%]"
@@ -123,15 +128,12 @@ export default function Hero() {
       />
 
       <div className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 sm:px-10 md:px-16 md:pb-20">
-        {/* Whole content group (headline, tagline, rule, paragraph) shifts
-            up together on mobile - existing margins between them (mt-2,
-            mt-5, mt-4) stay untouched, so their gaps remain equal. */}
         <div className="-translate-y-16 sm:translate-y-0">
           <div ref={maskRef} className="max-w-2xl md:max-w-3xl">
-           <h1
-  ref={headlineRef}
-  className="-translate-y-4 font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy sm:translate-y-0"
->
+            <h1
+              ref={headlineRef}
+              className="-translate-y-4 font-head text-[clamp(2rem,5.2vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tightest text-navy sm:translate-y-0"
+            >
               <span className="flex flex-wrap gap-x-3 md:gap-x-4">
                 <MaskedWord>Move</MaskedWord>
                 <MaskedWord>well,</MaskedWord>
@@ -149,13 +151,18 @@ export default function Hero() {
             </p>
           </div>
 
-          <span ref={ruleRef} className="mt-5 h-px w-16 origin-left bg-navy md:mt-6" />
+          <span
+            ref={ruleRef}
+            className="mt-5 h-px w-16 origin-left bg-navy md:mt-6"
+          />
 
           <p
             ref={subRef}
             className="mt-4 max-w-md font-body text-base text-paper/75 md:text-lg"
           >
-            Developing athletes from the ground up - structured S&C coaching from self-managed programming to fully tailored weekly support and in-person sessions in Auckland.
+            Developing athletes from the ground up - structured S&C coaching
+            from self-managed programming to fully tailored weekly support and
+            in-person sessions in Auckland.
           </p>
         </div>
       </div>

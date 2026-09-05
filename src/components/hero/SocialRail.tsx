@@ -3,7 +3,11 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { InstagramLogo, WhatsappLogo, EnvelopeSimple } from "@phosphor-icons/react";
+import {
+  InstagramLogo,
+  WhatsappLogo,
+  EnvelopeSimple,
+} from "@phosphor-icons/react";
 
 const LINKS = [
   {
@@ -34,7 +38,7 @@ export default function SocialRail() {
     gsap.fromTo(
       railRef.current,
       { opacity: 0, x: 16 },
-      { opacity: 1, x: 0, duration: 0.8, delay: 1.1, ease: "power2.out" }
+      { opacity: 1, x: 0, duration: 0.8, delay: 1.1, ease: "power2.out" },
     );
   }, []);
 
@@ -53,10 +57,10 @@ export default function SocialRail() {
           aria-label={label}
           className="pointer-events-auto text-paper/90 transition-colors duration-300 hover:text-navy hover:scale-110" // Increased opacity, added scale
         >
-          <Icon size={28} weight="regular" /> {/* Increased size to 28, changed to regular weight */}
+          <Icon size={28} weight="regular" />
         </a>
       ))}
-      <span className="h-16 w-px bg-paper/40" /> {/* Increased opacity */}
+      <span className="h-16 w-px bg-paper/40" />
     </div>
   );
 }

@@ -12,7 +12,10 @@ if (typeof window !== "undefined") {
 
 const CREDENTIALS = [
   { label: "Coaching focus", value: "Strength, Conditioning, Speed, Skills" },
-  { label: "Specialty", value: "Team Sports (Rugby, Netball, Basketball, Football)" },
+  {
+    label: "Specialty",
+    value: "Team Sports (Rugby, Netball, Basketball, Football)",
+  },
   { label: "Level", value: "Youth, Emerging Athletes" },
 ];
 
@@ -30,7 +33,6 @@ export default function About() {
       gsap.set(imageMaskRef.current, { overflow: "hidden" });
       gsap.set(imageRef.current, { scale: 1.15 });
 
-      // ---- Image reveal: clip-path wipe ----
       gsap.fromTo(
         imageMaskRef.current,
         { clipPath: "inset(0% 0% 100% 0%)" },
@@ -42,10 +44,9 @@ export default function About() {
             trigger: imageMaskRef.current,
             start: "top 85%",
           },
-        }
+        },
       );
 
-      // ---- Parallax drift while scrolling through ----
       gsap.to(imageRef.current, {
         yPercent: -6,
         ease: "none",
@@ -57,7 +58,6 @@ export default function About() {
         },
       });
 
-      // ---- Text: eyebrow, heading, paragraphs, credentials stagger in ----
       const textTl = gsap.timeline({
         scrollTrigger: {
           trigger: headingRef.current,
@@ -70,36 +70,32 @@ export default function About() {
         .fromTo(
           eyebrowRef.current,
           { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.5 }
+          { opacity: 1, y: 0, duration: 0.5 },
         )
         .fromTo(
           headingRef.current,
           { opacity: 0, y: 24 },
           { opacity: 1, y: 0, duration: 0.7 },
-          "-=0.25"
+          "-=0.25",
         )
         .fromTo(
           paraRefs.current,
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 },
-          "-=0.35"
+          "-=0.35",
         )
         .fromTo(
           credRef.current?.children ?? [],
           { opacity: 0, y: 12 },
           { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
-          "-=0.3"
+          "-=0.3",
         );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      className="bg-paper py-24 md:py-32"
-    >
+    <section id="about" ref={sectionRef} className="bg-paper py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-14 px-6 md:grid-cols-2 md:gap-16 md:px-16">
         {/* Photo */}
         <div
@@ -139,8 +135,8 @@ export default function About() {
             }}
             className="mt-7 font-body text-lg leading-relaxed text-ink/75"
           >
-            A qualified strength and conditioning coach from Gisborne, now
-            based in Auckland, NZ. I have over 10 years of experience in
+            A qualified strength and conditioning coach from Gisborne, now based
+            in Auckland, NZ. I have over 10 years of experience in
             high-performance sport and have coached some of the best athletes
             New Zealand has produced.
             <br />
@@ -157,8 +153,6 @@ export default function About() {
             foundation and sport-specific skill that carries an athlete from
             junior level toward representative and national pathways.
           </p>
-
-          {/* Removed the duplicate second paragraph */}
 
           <div
             ref={credRef}

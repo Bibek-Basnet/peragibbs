@@ -21,7 +21,7 @@ export default function InstagramFeed() {
     script.src = "//www.instagram.com/embed.js";
     script.async = true;
     script.onload = () => {
-      // Process any Instagram embeds
+      
       if (window.instgrm?.Embeds?.process) {
         window.instgrm.Embeds.process();
       }
@@ -30,7 +30,7 @@ export default function InstagramFeed() {
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup
+      
       const scripts = document.querySelectorAll(
         'script[src="//www.instagram.com/embed.js"]'
       );
@@ -38,7 +38,7 @@ export default function InstagramFeed() {
     };
   }, []);
 
-  // Instagram post URLs - replace these with your client's actual post URLs
+
   const posts = [
     "https://www.instagram.com/p/DVrhEyZkgDC/?img_index=1",
     "https://www.instagram.com/p/DROR7k2EgpA/",

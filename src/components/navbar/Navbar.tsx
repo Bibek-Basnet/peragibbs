@@ -28,7 +28,7 @@ export default function Navbar() {
   const background = useTransform(
     scrollY,
     [0, 120],
-    ["rgba(10,10,10,0)", "rgba(10,10,10,0.92)"]
+    ["rgba(10,10,10,0)", "rgba(10,10,10,0.92)"],
   );
   const borderOpacity = useTransform(scrollY, [0, 120], [0, 1]);
   const backdropBlur = useTransform(scrollY, [0, 120], [0, 12]);
@@ -45,7 +45,7 @@ export default function Navbar() {
     tl.fromTo(
       headerRef.current,
       { yPercent: -100 },
-      { yPercent: 0, duration: 0.7, ease: "power4.out" }
+      { yPercent: 0, duration: 0.7, ease: "power4.out" },
     );
 
     if (logoRef.current) {
@@ -53,7 +53,7 @@ export default function Navbar() {
         logoRef.current,
         { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.5 },
-        "-=0.35"
+        "-=0.35",
       );
     }
 
@@ -62,7 +62,7 @@ export default function Navbar() {
         linksRef.current.children,
         { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.45, stagger: 0.06 },
-        "-=0.3"
+        "-=0.3",
       );
     }
 
@@ -71,7 +71,7 @@ export default function Navbar() {
         ctaRef.current,
         { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.45 },
-        "-=0.3"
+        "-=0.3",
       );
     }
   }, []);
@@ -132,8 +132,8 @@ export default function Navbar() {
           <Link
             ref={ctaRef}
             href="https://form.jotform.com/261601330383043"
-  target="_blank"
-  rel="noreferrer"
+            target="_blank"
+            rel="noreferrer"
             className="hidden rounded-full border border-paper/30 px-6 py-2.5 font-head text-[15px] font-medium uppercase tracking-wide text-paper transition-colors duration-300 hover:border-navy hover:bg-navy hover:text-ink md:inline-block"
           >
             Apply Now
