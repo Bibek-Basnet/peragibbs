@@ -1,43 +1,52 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DownloadSimple } from "@phosphor-icons/react";
+import LeadCaptureModal, { type GuideInfo } from "./LeadCaptureModal";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const GUIDES = [
+const GUIDES: GuideInfo[] = [
   {
     tag: "Team Sport Edition",
     title: "Rugby, netball & team athletes.",
-    description:
-      "TeamBuildr setup, your 12-week block breakdown, the PGMVMT Big Five testing benchmarks - Bronco, Broad Jump, Push Up, Bench Press, Trap Bar Deadlift, Chin Up - RIR/RPE load guidance, and speed & conditioning protocols.",
     href: "/guides/pdf1.pdf",
-    image: "/gallery/guide1.jpg",
-    position: "50% 30%",
+    slug: "team-sport",
   },
   {
     tag: "Runner Edition",
     title: "Distance & endurance athletes.",
-    description:
-      "TeamBuildr setup, your 12-week block breakdown, 5km/10km/half/marathon time trial testing, RPE effort guidance, how to run a proper time trial, and how strength training integrates into your week.",
     href: "/guides/pdf2.pdf",
-    image: "/gallery/guide2.jpg",
-    position: "50% 40%",
+    slug: "runner",
   },
 ];
+
+const DESCRIPTIONS: Record<GuideInfo["slug"], string> = {
+  "team-sport":
+    "TeamBuildr setup, your 12-week block breakdown, the PGMVMT Big Five testing benchmarks - Bronco, Broad Jump, Push Up, Bench Press, Trap Bar Deadlift, Chin Up - RIR/RPE load guidance, and speed & conditioning protocols.",
+  runner:
+    "TeamBuildr setup, your 12-week block breakdown, 5km/10km/half/marathon time trial testing, RPE effort guidance, how to run a proper time trial, and how strength training integrates into your week.",
+};
+
+const IMAGES: Record<GuideInfo["slug"], { src: string; position: string }> = {
+  "team-sport": { src: "/gallery/guide1.jpg", position: "50% 30%" },
+  runner: { src: "/gallery/guide2.jpg", position: "50% 40%" },
+};
 
 function GuideRow({
   guide,
   index,
+  onSelect,
 }: {
-  guide: (typeof GUIDES)[number];
+  guide: GuideInfo;
   index: number;
+  onSelect: (guide: GuideInfo) => void;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const imageMaskRef = useRef<HTMLDivElement>(null);
@@ -47,6 +56,7 @@ function GuideRow({
   const ruleRef = useRef<HTMLSpanElement>(null);
 
   const reversed = index % 2 === 1;
+  const image = IMAGES[guide.slug];
 
   useGSAP(() => {
     gsap.set(imageMaskRef.current, { overflow: "hidden" });
@@ -77,7 +87,6 @@ function GuideRow({
       )
       .to(ruleRef.current, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, "-=0.3");
 
-    // Number count-up, tied to the same trigger
     const counter = { val: 0 };
     gsap.to(counter, {
       val: index + 1,
@@ -93,7 +102,6 @@ function GuideRow({
       },
     });
 
-    // Continuous parallax drift
     gsap.to(imageRef.current, {
       yPercent: -6,
       ease: "none",
@@ -109,7 +117,7 @@ function GuideRow({
   return (
     <div
       ref={rowRef}
-      className="grid grid-cols-1 gap-10 border-b border-paper/10 py-16 last:border-0 md:grid-cols-2 md:gap-16 md:py-20"
+      className="grid grid-cols-1 items-center gap-10 border-b border-paper/10 py-16 last:border-0 md:grid-cols-2 md:gap-20 md:py-20"
     >
       <div className={reversed ? "md:order-2" : "md:order-1"}>
         <div
@@ -118,12 +126,12 @@ function GuideRow({
         >
           <div ref={imageRef} className="absolute inset-0">
             <Image
-              src={guide.image}
+              src={image.src}
               alt={guide.title}
               fill
               sizes="(max-width: 768px) 90vw, 45vw"
               className="object-cover transition-all duration-700 ease-out md:grayscale md:group-hover:grayscale-0"
-              style={{ objectPosition: guide.position }}
+              style={{ objectPosition: image.position }}
             />
           </div>
         </div>
@@ -132,8 +140,7 @@ function GuideRow({
       <div
         ref={textRef}
         className={
-          "flex flex-col justify-center " +
-          (reversed ? "md:order-1" : "md:order-2")
+          "flex flex-col " + (reversed ? "md:order-1" : "md:order-2")
         }
       >
         <div className="flex items-baseline gap-4">
@@ -152,27 +159,24 @@ function GuideRow({
           {guide.title}
         </h3>
 
-        <span
-          ref={ruleRef}
-          className="mt-5 h-px w-12 origin-left bg-navy"
-        />
+        <span ref={ruleRef} className="mt-5 h-px w-12 origin-left bg-navy" />
 
         <p className="mt-5 max-w-md font-body text-base leading-relaxed text-paper/60 md:text-lg">
-          {guide.description}
+          {DESCRIPTIONS[guide.slug]}
         </p>
 
-        <a
-          href={guide.href}
-          download
-          className="group/btn mt-8 inline-flex w-fit items-center gap-3 rounded-full border-2 border-paper px-7 py-3.5 font-head text-sm font-semibold uppercase tracking-wide text-paper transition-all duration-300 hover:bg-navy hover:border-navy hover:text-paper"
+        <button
+          type="button"
+          onClick={() => onSelect(guide)}
+          className="group/btn mt-8 inline-flex w-fit items-center gap-3 rounded-full border-2 border-paper px-7 py-3.5 font-head text-sm font-semibold uppercase tracking-wide text-paper transition-all duration-300 hover:bg-navy hover:border-navy"
         >
           <DownloadSimple
             size={18}
             weight="bold"
             className="transition-transform duration-300 group-hover/btn:translate-y-0.5"
           />
-          Download guide
-        </a>
+          Get this guide
+        </button>
       </div>
     </div>
   );
@@ -182,6 +186,7 @@ export default function ProgrammeGuides() {
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const [selectedGuide, setSelectedGuide] = useState<GuideInfo | null>(null);
 
   useGSAP(
     () => {
@@ -207,7 +212,7 @@ export default function ProgrammeGuides() {
   return (
     <section ref={sectionRef} className="bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6 md:px-16">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl text-center">
           <p
             ref={eyebrowRef}
             className="mb-4 font-head text-xs font-semibold uppercase tracking-widest text-paper/50"
@@ -224,10 +229,17 @@ export default function ProgrammeGuides() {
 
         <div className="mt-16 border-t border-paper/10 md:mt-20">
           {GUIDES.map((guide, i) => (
-            <GuideRow key={guide.tag} guide={guide} index={i} />
+            <GuideRow
+              key={guide.slug}
+              guide={guide}
+              index={i}
+              onSelect={setSelectedGuide}
+            />
           ))}
         </div>
       </div>
+
+      <LeadCaptureModal guide={selectedGuide} onClose={() => setSelectedGuide(null)} />
     </section>
   );
 }
