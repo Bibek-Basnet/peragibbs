@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
 
 const lemonMilk = localFont({
   src: [
@@ -23,6 +21,13 @@ const lemonMilk = localFont({
 const openSans = Open_Sans({
   subsets: ["latin"],
   variable: "--font-open-sans",
+  display: "swap",
+});
+
+// Interface face for the admin panel.
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -135,19 +140,16 @@ export default function RootLayout({
   return (
     <html
       lang="en-NZ"
-      className={`${lemonMilk.variable} ${openSans.variable}`}
+      className={`${lemonMilk.variable} ${openSans.variable} ${inter.variable}`}
     >
       <head>
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="bg-ink text-paper font-body antialiased">
-        <Navbar />
         {children}
-        <Footer />
       </body>
     </html>
   );

@@ -1,0 +1,404 @@
+// Pera Gibbs Movement - data model
+// Everything the admin panel edits lives here.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Admin
+// ---------------------------------------------------------------------------
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("admin_users")
+}
+
+// ---------------------------------------------------------------------------
+// Coaching Offerings  (the "Services" section)
+// ---------------------------------------------------------------------------
+
+enum TierTreatment {
+  DARK
+  LIGHT_ACCENT
+  DARK_ACCENT
+}
+
+/// Single row of section-level copy. Always id = "singleton".
+model ServicesSection {
+  id      String @id @default("singleton")
+  eyebrow String @default("Coaching Offerings")
+  heading String @default("Programs built around you.")
+
+  weeklyLabel  String @default("Pay weekly")
+  upfrontLabel String @default("Pay upfront")
+  weeklyNote   String @default("Rolling weekly billing after a 12-week minimum commitment. Cancel any time.")
+  upfrontNote  String @default("12 weeks paid upfront - save {discount}% vs. weekly.")
+
+  /// Percentage discount applied to the upfront price, e.g. 8
+  upfrontDiscount Int @default(8)
+  /// Number of weeks billed when paying upfront
+  upfrontWeeks    Int @default(12)
+
+  compareOpenLabel  String @default("Compare all details")
+  compareOpenSub    String @default("See every tier side by side")
+  compareCloseLabel String @default("Hide full comparison")
+  compareCloseSub   String @default("Collapse the table below")
+
+  inPersonTitle       String @default("In-Person - 1:1 & Small Group")
+  inPersonDescription String @default("Skills, speed, movement quality, strength and conditioning - tailored to your goals.")
+  inPersonNote        String @default("Groups of 4+.")
+  inPersonCtaLabel    String @default("Enquire directly")
+  inPersonCtaHref     String @default("#contact")
+
+  updatedAt DateTime @updatedAt
+
+  @@map("services_section")
+}
+
+model CoachingTier {
+  id       String   @id @default(cuid())
+  name     String
+  slug     String   @unique
+  /// Weekly price in whole dollars
+  price    Int
+  /// Free-text onboarding fee line
+  fee      String
+  tagline  String
+  /// Bullet list, rendered in order
+  features String[]
+  bestFor  String
+
+  treatment     TierTreatment @default(DARK)
+  badge         String?
+  /// Optional scarcity count shown on the card
+  spotsLeft     Int?
+  spotsLabel    String?       @default("spots left this intake")
+  ctaLabel      String        @default("Apply Now")
+  ctaHref       String
+  /// Highlights this tier's column in the comparison table
+  isRecommended Boolean       @default(false)
+
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  compareCells CompareCell[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("coaching_tiers")
+}
+
+/// "How it works" steps below the tier cards.
+model ServiceStep {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  sortOrder   Int     @default(0)
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("service_steps")
+}
+
+model CompareGroup {
+  id        String @id @default(cuid())
+  title     String
+  sortOrder Int    @default(0)
+
+  rows CompareRow[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("compare_groups")
+}
+
+model CompareRow {
+  id        String       @id @default(cuid())
+  groupId   String
+  group     CompareGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  label     String
+  sortOrder Int          @default(0)
+
+  cells CompareCell[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([groupId, sortOrder])
+  @@map("compare_rows")
+}
+
+enum CompareCellKind {
+  TEXT
+  YES
+  NO
+}
+
+/// One cell of the comparison table: a row crossed with a tier.
+model CompareCell {
+  id     String       @id @default(cuid())
+  rowId  String
+  row    CompareRow   @relation(fields: [rowId], references: [id], onDelete: Cascade)
+  tierId String
+  tier   CoachingTier @relation(fields: [tierId], references: [id], onDelete: Cascade)
+
+  kind CompareCellKind @default(TEXT)
+  /// Only used when kind = TEXT
+  text String?
+
+  @@unique([rowId, tierId])
+  @@map("compare_cells")
+}
+
+model InPersonOption {
+  id    String @id @default(cuid())
+  label String
+  /// Kept as text so "150" and "150+" both work
+  price String
+  unit  String @default("per hour")
+
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("in_person_options")
+}
+
+// ---------------------------------------------------------------------------
+// Skills & Expertise
+// ---------------------------------------------------------------------------
+
+model SkillsSection {
+  id        String   @id @default("singleton")
+  eyebrow   String   @default("Skills & Expertise")
+  heading   String   @default("Every discipline covered.")
+  updatedAt DateTime @updatedAt
+
+  @@map("skills_section")
+}
+
+model Skill {
+  id          String  @id @default(cuid())
+  tag         String
+  title       String
+  description String
+  sortOrder   Int     @default(0)
+  isActive    Boolean @default(true)
+
+  highlights SkillHighlight[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("skills")
+}
+
+model SkillHighlight {
+  id      String @id @default(cuid())
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  title     String
+  detail    String
+  /// Optional pill shown next to the title
+  badge     String?
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([skillId, sortOrder])
+  @@map("skill_highlights")
+}
+
+// ---------------------------------------------------------------------------
+// Testimonials
+// ---------------------------------------------------------------------------
+
+model TestimonialsSection {
+  id           String   @id @default("singleton")
+  eyebrow      String   @default("Testimonials")
+  heading      String   @default("What athletes say.")
+  viewAllLabel String   @default("View all")
+  pageEyebrow  String   @default("Testimonials")
+  pageHeading  String   @default("What athletes say.")
+  updatedAt    DateTime @updatedAt
+
+  @@map("testimonials_section")
+}
+
+model Testimonial {
+  id    String @id @default(cuid())
+  name  String
+  role  String
+  quote String
+
+  photoUrl      String
+  /// CSS object-position, e.g. "50% 20%"
+  photoPosition String @default("50% 20%")
+
+  /// Pinned testimonials are the ones shown in the home page marquee
+  isPinned    Boolean @default(false)
+  isPublished Boolean @default(true)
+  sortOrder   Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isPinned, sortOrder])
+  @@index([isPublished, sortOrder])
+  @@map("testimonials")
+}
+
+// ---------------------------------------------------------------------------
+// Programme Guides + lead capture
+// ---------------------------------------------------------------------------
+
+model GuidesSection {
+  id        String   @id @default("singleton")
+  eyebrow   String   @default("Programme Guides")
+  heading   String   @default("Know exactly what you are getting.")
+  updatedAt DateTime @updatedAt
+
+  @@map("guides_section")
+}
+
+model Guide {
+  id          String @id @default(cuid())
+  slug        String @unique
+  tag         String
+  title       String
+  description String
+
+  /// Path or URL to the downloadable PDF
+  fileUrl       String
+  imageUrl      String
+  imagePosition String @default("50% 30%")
+  ctaLabel      String @default("Get this guide")
+
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  leads GuideLead[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+  @@map("guides")
+}
+
+enum EnquiryRole {
+  ATHLETE
+  PARENT
+  OTHER
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  ARCHIVED
+}
+
+/// A Programme Guide download form submission.
+model GuideLead {
+  id      String  @id @default(cuid())
+  guideId String?
+  guide   Guide?  @relation(fields: [guideId], references: [id], onDelete: SetNull)
+
+  /// Denormalised so leads survive a guide being deleted
+  guideSlug  String
+  guideTitle String
+
+  name     String
+  email    String
+  phone    String?
+  role     EnquiryRole
+  interest String
+  consent  Boolean     @default(false)
+
+  status LeadStatus @default(NEW)
+  notes  String?
+
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([guideSlug])
+  @@index([email])
+  @@map("guide_leads")
+}
+
+// ---------------------------------------------------------------------------
+// Contact form
+// ---------------------------------------------------------------------------
+
+enum MessageStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  FAILED
+  SKIPPED
+}
+
+model ContactSubmission {
+  id      String       @id @default(cuid())
+  name    String
+  email   String
+  phone   String?
+  role    EnquiryRole?
+  message String
+
+  status MessageStatus @default(NEW)
+
+  /// Delivery state of the Resend notification email
+  emailStatus EmailStatus @default(PENDING)
+  emailId     String?
+  emailError  String?
+
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([email])
+  @@map("contact_submissions")
+}

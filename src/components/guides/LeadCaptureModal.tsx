@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import {
@@ -17,12 +17,7 @@ import {
   Phone,
 } from "@phosphor-icons/react";
 
-export type GuideInfo = {
-  tag: string;
-  title: string;
-  href: string;
-  slug: "team-sport" | "runner";
-};
+import type { PublicGuide } from "@/lib/content";
 
 type FormState = {
   name: string;
@@ -31,6 +26,8 @@ type FormState = {
   role: "athlete" | "parent" | "";
   interest: string;
   consent: boolean;
+  // Honeypot - hidden from real users.
+  company: string;
 };
 
 const INITIAL_STATE: FormState = {
@@ -40,6 +37,7 @@ const INITIAL_STATE: FormState = {
   role: "",
   interest: "",
   consent: false,
+  company: "",
 };
 
 const INTERESTS = [
@@ -65,7 +63,7 @@ export default function LeadCaptureModal({
   guide,
   onClose,
 }: {
-  guide: GuideInfo | null;
+  guide: PublicGuide | null;
   onClose: () => void;
 }) {
   const isOpen = guide !== null;
@@ -74,18 +72,11 @@ export default function LeadCaptureModal({
   const [status, setStatus] = useState<
     "idle" | "submitting" | "done" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const backdropRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const stepRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setStep(1);
-      setForm(INITIAL_STATE);
-      setStatus("idle");
-    }
-  }, [isOpen, guide?.slug]);
 
   useGSAP(
     () => {
@@ -134,34 +125,52 @@ export default function LeadCaptureModal({
     setStep((s) => Math.max(s - 1, 1));
   }
 
+  function downloadGuide(fileUrl: string) {
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   async function handleSubmit() {
     if (!guide) return;
     setStatus("submitting");
+    setErrorMessage(null);
+
     try {
-      // --- BACKEND HAND-OFF ---
-      // Replace with the real endpoint. Payload includes guideSlug so the
-      // admin panel can filter/export by which guide (team-sport | runner)
-      // each lead downloaded.
-      await fetch("/api/leads", {
+      const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...form,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          role: form.role,
+          interest: form.interest,
+          consent: form.consent,
+          company: form.company,
           guideSlug: guide.slug,
           guideTitle: guide.title,
-          submittedAt: new Date().toISOString(),
         }),
       });
 
-      setStatus("done");
+      if (!res.ok) {
+        const payload = await res.json().catch(() => null);
+        setErrorMessage(
+          payload?.error ?? "Something went wrong - please try again.",
+        );
+        setStatus("error");
+        return;
+      }
 
-      const link = document.createElement("a");
-      link.href = guide.href;
-      link.download = "";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      setStatus("done");
+      downloadGuide(guide.fileUrl);
     } catch {
+      setErrorMessage(
+        "We could not reach the server. Check your connection and try again.",
+      );
       setStatus("error");
     }
   }
@@ -169,7 +178,7 @@ export default function LeadCaptureModal({
   const step1Valid =
     form.name.trim().length > 1 && /\S+@\S+\.\S+/.test(form.email);
   const step2Valid = form.role !== "" && form.interest !== "";
-  const meta = STEP_META[step - 1];
+  const meta = STEP_META[step - 1]!;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -216,6 +225,13 @@ export default function LeadCaptureModal({
                 Your guide is downloading now. Pera may reach out personally to
                 see how your training&rsquo;s going - keep an eye on your inbox.
               </p>
+              <a
+                href={guide.fileUrl}
+                download
+                className="mt-4 font-body text-xs text-paper/50 underline underline-offset-2 transition-colors hover:text-paper"
+              >
+                Download did not start? Get it here.
+              </a>
               <button
                 type="button"
                 onClick={onClose}
@@ -239,6 +255,20 @@ export default function LeadCaptureModal({
               <p className="mt-1.5 font-body text-sm text-paper/55">
                 {meta.subtitle}
               </p>
+
+              {/* Honeypot */}
+              <div aria-hidden className="hidden">
+                <label htmlFor="company">Company</label>
+                <input
+                  id="company"
+                  name="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.company}
+                  onChange={(e) => update("company", e.target.value)}
+                />
+              </div>
 
               <div ref={stepRef} className="mt-8">
                 {step === 1 && (
@@ -311,9 +341,7 @@ export default function LeadCaptureModal({
                           >
                             <Icon
                               size={20}
-                              weight={
-                                form.interest === label ? "fill" : "light"
-                              }
+                              weight={form.interest === label ? "fill" : "light"}
                               className={
                                 form.interest === label
                                   ? "text-navy"
@@ -360,7 +388,8 @@ export default function LeadCaptureModal({
 
                     {status === "error" && (
                       <p className="font-body text-sm text-red-400">
-                        Something went wrong - please try again.
+                        {errorMessage ??
+                          "Something went wrong - please try again."}
                       </p>
                     )}
                   </div>

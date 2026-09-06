@@ -5,6 +5,8 @@ import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowLeft } from "@phosphor-icons/react";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
 
 const ASCII_404 = [
   " ██╗  ██╗ ██████╗ ██╗  ██╗",
@@ -92,6 +94,8 @@ export default function NotFound() {
   );
 
   return (
+    <>
+      <Navbar />
     <main
       ref={containerRef}
       className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-x-hidden overflow-y-hidden bg-ink px-4 pt-24 text-center sm:px-6 sm:pt-28 md:pt-32"
@@ -161,5 +165,7 @@ export default function NotFound() {
         </Link>
       </div>
     </main>
+      <Footer />
+    </>
   );
 }

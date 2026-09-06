@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight } from "@phosphor-icons/react";
-import { TESTIMONIALS } from "@/data/testimonials";
+
+import type { TestimonialsData } from "@/lib/content";
 import TestimonialCard from "./TestimonialCard";
 
 if (typeof window !== "undefined") {
@@ -16,7 +17,9 @@ if (typeof window !== "undefined") {
 const AUTO_SCROLL_SPEED = 0.4;
 const RESUME_DELAY = 2500;
 
-export default function Testimonials() {
+export default function Testimonials({ data }: { data: TestimonialsData }) {
+  const { section, testimonials } = data;
+
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -50,9 +53,11 @@ export default function Testimonials() {
     { scope: sectionRef },
   );
 
+  const hasTestimonials = testimonials.length > 0;
+
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || !hasTestimonials) return;
 
     const tick = () => {
       if (!pausedRef.current && !isDraggingRef.current) {
@@ -70,7 +75,7 @@ export default function Testimonials() {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [hasTestimonials]);
 
   function pauseAutoScroll() {
     pausedRef.current = true;
@@ -105,6 +110,8 @@ export default function Testimonials() {
     scheduleResume();
   }
 
+  if (!hasTestimonials) return null;
+
   return (
     <section
       id="testimonials"
@@ -118,13 +125,13 @@ export default function Testimonials() {
               ref={eyebrowRef}
               className="mb-4 font-head text-xs font-semibold uppercase tracking-widest text-paper/50"
             >
-              Testimonials
+              {section.eyebrow}
             </p>
             <h2
               ref={headingRef}
               className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-paper md:text-5xl"
             >
-              <span className="text-navy">What athletes say.</span>
+              <span className="text-navy">{section.heading}</span>
             </h2>
           </div>
 
@@ -132,7 +139,7 @@ export default function Testimonials() {
             href="/testimonials"
             className="group inline-flex items-center gap-2 rounded-full border border-paper/20 px-6 py-3 font-head text-sm font-semibold uppercase tracking-wide text-paper transition-colors duration-300 hover:border-ember hover:bg-navy hover:text-ink"
           >
-            View all
+            {section.viewAllLabel}
             <ArrowRight
               size={16}
               weight="bold"
@@ -164,9 +171,9 @@ export default function Testimonials() {
           className="scrollbar-hide flex w-full cursor-grab gap-6 overflow-x-auto px-6 active:cursor-grabbing md:gap-8 md:px-16"
           style={{ scrollBehavior: "auto" }}
         >
-          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+          {[...testimonials, ...testimonials].map((t, i) => (
             <TestimonialCard
-              key={`${t.name}-${i}`}
+              key={`${t.id}-${i}`}
               testimonial={t}
               className="w-[85vw] max-w-[420px] shrink-0 sm:h-[480px] sm:w-[600px] sm:max-w-none md:h-[520px] md:w-[680px]"
             />

@@ -10,6 +10,15 @@
 
   --font-head: var(--font-poppins), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: var(--font-open-sans), sans-serif;
+  /* Admin panel UI face. A display face like LEMON MILK is unreadable at
+     interface sizes, so the admin uses a proper UI sans throughout. */
+  --font-ui: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Admin surfaces */
+  --color-shell: #0f1115;
+  --color-shell-muted: #1a1d24;
+  --color-canvas: #f5f6f8;
+  --color-line: #e4e6ea;
 
   --tracking-tightest: -0.04em;
   --tracking-widest: 0.2em;

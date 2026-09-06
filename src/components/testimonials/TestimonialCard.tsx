@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import { Quotes } from "@phosphor-icons/react";
-import type { Testimonial } from "@/data/testimonials";
+
+import type { PublicTestimonial } from "@/lib/content";
 
 export default function TestimonialCard({
   testimonial,
   className = "",
 }: {
-  testimonial: Testimonial;
+  testimonial: PublicTestimonial;
   className?: string;
 }) {
   const t = testimonial;
@@ -18,12 +19,12 @@ export default function TestimonialCard({
     >
       <div className="relative h-56 w-full shrink-0 overflow-hidden rounded-t-2xl sm:h-auto sm:w-[42%] sm:rounded-none">
         <Image
-          src={t.photo}
+          src={t.photoUrl}
           alt={t.name}
           fill
           sizes="(max-width: 640px) 100vw, 300px"
           className="object-cover"
-          style={{ objectPosition: t.position }}
+          style={{ objectPosition: t.photoPosition }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
       </div>

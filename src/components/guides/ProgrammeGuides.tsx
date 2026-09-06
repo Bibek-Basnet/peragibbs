@@ -6,47 +6,22 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { DownloadSimple } from "@phosphor-icons/react";
-import LeadCaptureModal, { type GuideInfo } from "./LeadCaptureModal";
+
+import type { GuidesData, PublicGuide } from "@/lib/content";
+import LeadCaptureModal from "./LeadCaptureModal";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-const GUIDES: GuideInfo[] = [
-  {
-    tag: "Team Sport Edition",
-    title: "Rugby, netball & team athletes.",
-    href: "/guides/pdf1.pdf",
-    slug: "team-sport",
-  },
-  {
-    tag: "Runner Edition",
-    title: "Distance & endurance athletes.",
-    href: "/guides/pdf2.pdf",
-    slug: "runner",
-  },
-];
-
-const DESCRIPTIONS: Record<GuideInfo["slug"], string> = {
-  "team-sport":
-    "TeamBuildr setup, your 12-week block breakdown, the PGMVMT Big Five testing benchmarks - Bronco, Broad Jump, Push Up, Bench Press, Trap Bar Deadlift, Chin Up - RIR/RPE load guidance, and speed & conditioning protocols.",
-  runner:
-    "TeamBuildr setup, your 12-week block breakdown, 5km/10km/half/marathon time trial testing, RPE effort guidance, how to run a proper time trial, and how strength training integrates into your week.",
-};
-
-const IMAGES: Record<GuideInfo["slug"], { src: string; position: string }> = {
-  "team-sport": { src: "/gallery/guide1.jpg", position: "50% 30%" },
-  runner: { src: "/gallery/guide2.jpg", position: "50% 40%" },
-};
 
 function GuideRow({
   guide,
   index,
   onSelect,
 }: {
-  guide: GuideInfo;
+  guide: PublicGuide;
   index: number;
-  onSelect: (guide: GuideInfo) => void;
+  onSelect: (guide: PublicGuide) => void;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const imageMaskRef = useRef<HTMLDivElement>(null);
@@ -56,7 +31,6 @@ function GuideRow({
   const ruleRef = useRef<HTMLSpanElement>(null);
 
   const reversed = index % 2 === 1;
-  const image = IMAGES[guide.slug];
 
   useGSAP(() => {
     gsap.set(imageMaskRef.current, { overflow: "hidden" });
@@ -71,21 +45,25 @@ function GuideRow({
     tl.fromTo(
       imageMaskRef.current,
       { clipPath: "inset(0% 0% 100% 0%)" },
-      { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut" }
+      { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "power4.inOut" },
     )
       .fromTo(
         numberRef.current,
         { opacity: 0, x: -12 },
         { opacity: 1, x: 0, duration: 0.5 },
-        "-=0.7"
+        "-=0.7",
       )
       .fromTo(
         textRef.current ? textRef.current.children : [],
         { opacity: 0, y: 18 },
         { opacity: 1, y: 0, duration: 0.6, stagger: 0.09 },
-        "-=0.35"
+        "-=0.35",
       )
-      .to(ruleRef.current, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, "-=0.3");
+      .to(
+        ruleRef.current,
+        { scaleX: 1, duration: 0.5, ease: "power2.inOut" },
+        "-=0.3",
+      );
 
     const counter = { val: 0 };
     gsap.to(counter, {
@@ -96,7 +74,7 @@ function GuideRow({
       onUpdate: () => {
         if (numberRef.current) {
           numberRef.current.textContent = String(
-            Math.round(counter.val)
+            Math.round(counter.val),
           ).padStart(2, "0");
         }
       },
@@ -126,12 +104,12 @@ function GuideRow({
         >
           <div ref={imageRef} className="absolute inset-0">
             <Image
-              src={image.src}
+              src={guide.imageUrl}
               alt={guide.title}
               fill
               sizes="(max-width: 768px) 90vw, 45vw"
               className="object-cover transition-all duration-700 ease-out md:grayscale md:group-hover:grayscale-0"
-              style={{ objectPosition: image.position }}
+              style={{ objectPosition: guide.imagePosition }}
             />
           </div>
         </div>
@@ -139,9 +117,7 @@ function GuideRow({
 
       <div
         ref={textRef}
-        className={
-          "flex flex-col " + (reversed ? "md:order-1" : "md:order-2")
-        }
+        className={"flex flex-col " + (reversed ? "md:order-1" : "md:order-2")}
       >
         <div className="flex items-baseline gap-4">
           <span
@@ -162,7 +138,7 @@ function GuideRow({
         <span ref={ruleRef} className="mt-5 h-px w-12 origin-left bg-navy" />
 
         <p className="mt-5 max-w-md font-body text-base leading-relaxed text-paper/60 md:text-lg">
-          {DESCRIPTIONS[guide.slug]}
+          {guide.description}
         </p>
 
         <button
@@ -175,18 +151,19 @@ function GuideRow({
             weight="bold"
             className="transition-transform duration-300 group-hover/btn:translate-y-0.5"
           />
-          Get this guide
+          {guide.ctaLabel}
         </button>
       </div>
     </div>
   );
 }
 
-export default function ProgrammeGuides() {
+export default function ProgrammeGuides({ data }: { data: GuidesData }) {
+  const { section, guides } = data;
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const [selectedGuide, setSelectedGuide] = useState<GuideInfo | null>(null);
+  const [selectedGuide, setSelectedGuide] = useState<PublicGuide | null>(null);
 
   useGSAP(
     () => {
@@ -198,16 +175,18 @@ export default function ProgrammeGuides() {
       tl.fromTo(
         eyebrowRef.current,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.5 }
+        { opacity: 1, y: 0, duration: 0.5 },
       ).fromTo(
         headingRef.current,
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.7 },
-        "-=0.25"
+        "-=0.25",
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
+
+  if (guides.length === 0) return null;
 
   return (
     <section ref={sectionRef} className="bg-ink py-24 md:py-32">
@@ -217,20 +196,20 @@ export default function ProgrammeGuides() {
             ref={eyebrowRef}
             className="mb-4 font-head text-xs font-semibold uppercase tracking-widest text-paper/50"
           >
-            Programme Guides
+            {section.eyebrow}
           </p>
           <h2
             ref={headingRef}
             className="font-head text-4xl font-semibold uppercase leading-[0.95] tracking-tightest text-navy md:text-5xl"
           >
-            Know exactly what you&rsquo;re getting.
+            {section.heading}
           </h2>
         </div>
 
         <div className="mt-16 border-t border-paper/10 md:mt-20">
-          {GUIDES.map((guide, i) => (
+          {guides.map((guide, i) => (
             <GuideRow
-              key={guide.slug}
+              key={guide.id}
               guide={guide}
               index={i}
               onSelect={setSelectedGuide}
@@ -239,7 +218,13 @@ export default function ProgrammeGuides() {
         </div>
       </div>
 
-      <LeadCaptureModal guide={selectedGuide} onClose={() => setSelectedGuide(null)} />
+      {/* Keying on the slug remounts the modal, which resets the multi-step
+          form whenever a different guide is opened. */}
+      <LeadCaptureModal
+        key={selectedGuide?.slug ?? "closed"}
+        guide={selectedGuide}
+        onClose={() => setSelectedGuide(null)}
+      />
     </section>
   );
 }

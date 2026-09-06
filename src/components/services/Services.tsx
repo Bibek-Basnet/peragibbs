@@ -6,148 +6,32 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Check, CaretDown, ArrowRight } from "@phosphor-icons/react";
 
+import type { PublicTier, ServicesData } from "@/lib/content";
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const UPFRONT_DISCOUNT = 0.08;
-const ADVANCED_SPOTS_LEFT = 3;
-
-type Tier = {
-  name: string;
-  price: number;
-  fee: string;
-  tagline: string;
-  features: string[];
-  bestFor: string;
-  treatment: "dark" | "light-accent" | "dark-accent";
-  badge?: string;
-};
-
-const TIERS: Tier[] = [
-  {
-    name: "Foundation",
-    price: 49,
-    fee: "$50 onboarding fee",
-    tagline: "You're buying a focused program",
-    features: [
-      "Single-discipline programming - strength or conditioning based",
-      "Structured block, self-managed",
-    ],
-    bestFor:
-      "Athletes with one clear focus, or just getting started and want to keep it simple.",
-    treatment: "dark",
-  },
-  {
-    name: "Intermediate",
-    price: 79,
-    fee: "$50 onboarding fee",
-    tagline: "You're buying complete, balanced programming",
-    features: [
-      "Strength and conditioning combined into one structured block",
-      "Built for well-rounded athletic development",
-      "Structured block, self-managed",
-    ],
-    bestFor:
-      "Athletes who want proper all-around development without needing hands-on coaching.",
-    treatment: "light-accent",
-    badge: "Recommended",
-  },
-  {
-    name: "Advanced",
-    price: 119,
-    fee: "$100 onboarding fee",
-    tagline: "You're buying me",
-    features: [
-      "Gym and conditioning focused programming",
-      "Fully tailored and mapped out week to week",
-      "Weekly check-ins and adjustments where needed",
-    ],
-    bestFor:
-      "Athletes chasing a specific performance target or needing specialised support (e.g. injury rehab).",
-    treatment: "dark-accent",
-  },
-];
-
-const IN_PERSON = [
-  { label: "1:1", price: "150" },
-  { label: "2 athletes", price: "200" },
-  { label: "3 athletes", price: "250" },
-];
-
-const STEPS = [
-  {
-    title: "Apply",
-    desc: "A 2-minute form - no payment needed yet.",
-  },
-  {
-    title: "Onboarding call",
-    desc: "We go over your training history, map out your goals and confirm the best programme tier.",
-  },
-  {
-    title: "Start training",
-    desc: "Once payment is received your personalised program will be acessable via the app Teambuildr.",
-  },
-];
-
-type CompareValue = string | boolean;
-type CompareRow = { label: string; values: CompareValue[] };
-type CompareGroup = { title: string; rows: CompareRow[] };
-
-const RECOMMENDED_INDEX = 1;
-
-const COMPARE_GROUPS: CompareGroup[] = [
-  {
-    title: "Pricing",
-    rows: [
-      { label: "Weekly price", values: ["$49", "$79", "$119"] },
-      { label: "Onboarding fee", values: ["$50", "$50", "$100"] },
-    ],
-  },
-  {
-    title: "Programming",
-    rows: [
-      {
-        label: "Programming style",
-        values: [
-          "Single discipline",
-          "Strength + conditioning",
-          "Fully tailored",
-        ],
-      },
-      {
-        label: "Program adjustments",
-        values: ["At start only", "At start only", "Ongoing, weekly"],
-      },
-    ],
-  },
-  {
-    title: "Support",
-    rows: [
-      { label: "Weekly check-ins", values: [false, false, true] },
-      {
-        label: "Injury rehab / specific targets",
-        values: [false, false, true],
-      },
-    ],
-  },
-];
-
-function upfrontTotal(weeklyPrice: number) {
-  return Math.round(weeklyPrice * 12 * (1 - UPFRONT_DISCOUNT));
-}
-
-function cardShellClass(treatment: Tier["treatment"]) {
-  if (treatment === "dark") {
+function cardShellClass(treatment: PublicTier["treatment"]) {
+  if (treatment === "DARK") {
     return "bg-ink text-paper border border-paper/10";
   }
-  if (treatment === "dark-accent") {
+  if (treatment === "DARK_ACCENT") {
     return "bg-ink text-paper border-2 border-ember shadow-2xl shadow-ink/20 md:-translate-y-3";
   }
   return "bg-white text-ink border-2 border-navy/30";
 }
 
-export default function Services() {
+export default function Services({ data }: { data: ServicesData }) {
+  const { section, tiers, steps, compareGroups, inPerson } = data;
+  const discountRate = section.upfrontDiscount / 100;
+
+  function upfrontTotal(weeklyPrice: number) {
+    return Math.round(
+      weeklyPrice * section.upfrontWeeks * (1 - discountRate),
+    );
+  }
+
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -162,11 +46,13 @@ export default function Services() {
 
   const pillRef = useRef<HTMLDivElement>(null);
   const priceRefs = useRef<Array<HTMLSpanElement | null>>([]);
-  const priceValues = useRef<number[]>(TIERS.map((t) => t.price));
+  const priceValues = useRef<number[]>(tiers.map((t) => t.price));
   const compareWrapRef = useRef<HTMLDivElement>(null);
   const compareInnerRef = useRef<HTMLDivElement>(null);
   const stepItemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const stepDotRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  const recommendedIndex = tiers.findIndex((t) => t.isRecommended);
 
   useGSAP(
     () => {
@@ -260,7 +146,7 @@ export default function Services() {
         },
       );
     },
-    { scope: sectionRef },
+    { scope: sectionRef, dependencies: [tiers.length, steps.length] },
   );
 
   useGSAP(
@@ -271,12 +157,12 @@ export default function Services() {
         ease: "power3.inOut",
       });
 
-      TIERS.forEach((tier, i) => {
+      tiers.forEach((tier, i) => {
         const el = priceRefs.current[i];
         if (!el) return;
         const target =
           billing === "weekly" ? tier.price : upfrontTotal(tier.price);
-        const counter = { val: priceValues.current[i] };
+        const counter = { val: priceValues.current[i] ?? tier.price };
 
         gsap.to(counter, {
           val: target,
@@ -333,6 +219,13 @@ export default function Services() {
     stepDotRefs.current[i] = el;
   }
 
+  const billingNote =
+    billing === "upfront"
+      ? section.upfrontNote
+          .replace("{discount}", String(section.upfrontDiscount))
+          .replace("{weeks}", String(section.upfrontWeeks))
+      : section.weeklyNote;
+
   return (
     <section id="services" ref={sectionRef} className="bg-paper py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6 md:px-16">
@@ -341,13 +234,13 @@ export default function Services() {
             ref={eyebrowRef}
             className="mb-4 font-head text-xs font-bold uppercase tracking-[0.25em] text-black"
           >
-            Coaching Offerings
+            {section.eyebrow}
           </p>
           <h2
             ref={headingRef}
             className="font-head text-5xl font-black uppercase leading-[0.92] tracking-tightest text-navy md:text-6xl"
           >
-            Programs built around you.
+            {section.heading}
           </h2>
         </div>
 
@@ -369,7 +262,7 @@ export default function Services() {
                 (billing === "weekly" ? "text-paper" : "text-ink/60")
               }
             >
-              Pay weekly
+              {section.weeklyLabel}
             </button>
             <button
               type="button"
@@ -379,28 +272,22 @@ export default function Services() {
                 (billing === "upfront" ? "text-paper" : "text-ink/60")
               }
             >
-              Pay upfront
+              {section.upfrontLabel}
             </button>
           </div>
-          <p className="font-body text-sm text-ink/60">
-            {billing === "upfront"
-              ? "12 weeks paid upfront - save " +
-                Math.round(UPFRONT_DISCOUNT * 100) +
-                "% vs. weekly."
-              : "Rolling weekly billing after a 12-week minimum commitment. Cancel any time."}
-          </p>
+          <p className="font-body text-sm text-ink/60">{billingNote}</p>
         </div>
 
         <div
           ref={cardsRef}
           className="mx-auto mt-14 grid max-w-6xl gap-6 md:mt-16 md:grid-cols-3 md:gap-6"
         >
-          {TIERS.map((tier, i) => {
-            const isLight = tier.treatment === "light-accent";
+          {tiers.map((tier, i) => {
+            const isLight = tier.treatment === "LIGHT_ACCENT";
 
             return (
               <div
-                key={tier.name}
+                key={tier.id}
                 className={
                   "relative flex flex-col rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl " +
                   cardShellClass(tier.treatment)
@@ -439,17 +326,21 @@ export default function Services() {
                       (isLight ? "text-ink/50" : "text-paper/60")
                     }
                   >
-                    {billing === "weekly" ? "/week" : "/12 weeks"}
+                    {billing === "weekly"
+                      ? "/week"
+                      : `/${section.upfrontWeeks} weeks`}
                   </span>
                 </div>
-                <p
-                  className={
-                    "mt-1 font-body text-sm " +
-                    (isLight ? "text-ink/45" : "text-paper/50")
-                  }
-                >
-                  {"+ " + tier.fee}
-                </p>
+                {tier.fee ? (
+                  <p
+                    className={
+                      "mt-1 font-body text-sm " +
+                      (isLight ? "text-ink/45" : "text-paper/50")
+                    }
+                  >
+                    {"+ " + tier.fee}
+                  </p>
+                ) : null}
 
                 <p
                   className={
@@ -466,10 +357,7 @@ export default function Services() {
                       <Check
                         size={16}
                         weight="bold"
-                        className={
-                          "mt-0.5 shrink-0 " +
-                          (isLight ? "text-navy" : "text-navy")
-                        }
+                        className="mt-0.5 shrink-0 text-navy"
                       />
                       <span
                         className={
@@ -498,17 +386,21 @@ export default function Services() {
                     <span className="font-semibold">Best for:</span>{" "}
                     {tier.bestFor}
                   </p>
-                  {tier.treatment === "dark-accent" ? (
+                  {tier.spotsLeft !== null ? (
                     <p className="mt-2 font-head text-xs font-bold uppercase tracking-widest text-navy">
-                      {ADVANCED_SPOTS_LEFT + " spots left this intake"}
+                      {`${tier.spotsLeft} ${tier.spotsLabel ?? "spots left this intake"}`}
                     </p>
                   ) : null}
                 </div>
 
                 <a
-                  href="https://form.jotform.com/261601330383043"
-                  target="_blank"
-                  rel="noreferrer"
+                  href={tier.ctaHref}
+                  target={
+                    tier.ctaHref.startsWith("http") ? "_blank" : undefined
+                  }
+                  rel={
+                    tier.ctaHref.startsWith("http") ? "noreferrer" : undefined
+                  }
                   className={
                     "mt-8 inline-flex items-center justify-center rounded-full py-3 font-head text-sm font-bold uppercase tracking-wide transition-colors duration-300 " +
                     (isLight
@@ -516,7 +408,7 @@ export default function Services() {
                       : "bg-navy text-ink hover:bg-paper")
                   }
                 >
-                  Apply Now
+                  {tier.ctaLabel}
                 </a>
               </div>
             );
@@ -524,167 +416,171 @@ export default function Services() {
         </div>
 
         {/* How it works */}
-        <div ref={stepsWrapRef} className="mx-auto mt-20 max-w-4xl md:mt-24">
-          <div className="relative">
-            <div className="absolute left-0 right-0 top-[22px] hidden h-px bg-ink/10 md:block" />
-            <div
-              ref={stepsLineRef}
-              className="absolute left-0 top-[22px] hidden h-px w-full origin-left bg-navy md:block"
-            />
+        {steps.length > 0 ? (
+          <div ref={stepsWrapRef} className="mx-auto mt-20 max-w-4xl md:mt-24">
+            <div className="relative">
+              <div className="absolute left-0 right-0 top-[22px] hidden h-px bg-ink/10 md:block" />
+              <div
+                ref={stepsLineRef}
+                className="absolute left-0 top-[22px] hidden h-px w-full origin-left bg-navy md:block"
+              />
 
-            <div className="grid gap-10 md:grid-cols-3 md:gap-6">
-              {STEPS.map((step, i) => (
-                <div
-                  key={step.title}
-                  ref={(el) => setStepItemRef(el, i)}
-                  className="group relative flex flex-col items-center text-center md:items-start md:text-left"
-                >
+              <div className="grid gap-10 md:grid-cols-3 md:gap-6">
+                {steps.map((step, i) => (
                   <div
-                    ref={(el) => setStepDotRef(el, i)}
-                    className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-navy bg-paper font-head text-sm font-bold text-ink transition-colors duration-300 group-hover:bg-navy group-hover:text-paper"
+                    key={step.id}
+                    ref={(el) => setStepItemRef(el, i)}
+                    className="group relative flex flex-col items-center text-center md:items-start md:text-left"
                   >
-                    {i + 1}
+                    <div
+                      ref={(el) => setStepDotRef(el, i)}
+                      className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-navy bg-paper font-head text-sm font-bold text-ink transition-colors duration-300 group-hover:bg-navy group-hover:text-paper"
+                    >
+                      {i + 1}
+                    </div>
+                    <p className="mt-4 font-head text-lg font-bold tracking-tight text-ink">
+                      {step.title}
+                    </p>
+                    <p className="mt-1.5 font-body text-sm text-ink/60">
+                      {step.description}
+                    </p>
                   </div>
-                  <p className="mt-4 font-head text-lg font-bold tracking-tight text-ink">
-                    {step.title}
-                  </p>
-                  <p className="mt-1.5 font-body text-sm text-ink/60">
-                    {step.desc}
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
 
         {/* Compare table */}
-        <div className="mx-auto mt-16 max-w-6xl md:mt-20">
-          <button
-            type="button"
-            onClick={() => setShowCompare((v) => !v)}
-            aria-expanded={showCompare}
-            className={
-              "group mx-auto flex w-full max-w-md items-center justify-between rounded-2xl border-2 px-6 py-4 transition-all duration-300 " +
-              (showCompare
-                ? "border-ink bg-ink text-paper"
-                : "border-ink/15 bg-white text-ink hover:border-navy hover:bg-navy/5")
-            }
-          >
-            <span className="text-left">
-              <span className="block font-head text-sm font-bold uppercase tracking-widest">
-                {showCompare ? "Hide full comparison" : "Compare all details"}
+        {compareGroups.length > 0 && tiers.length > 0 ? (
+          <div className="mx-auto mt-16 max-w-6xl md:mt-20">
+            <button
+              type="button"
+              onClick={() => setShowCompare((v) => !v)}
+              aria-expanded={showCompare}
+              className={
+                "group mx-auto flex w-full max-w-md items-center justify-between rounded-2xl border-2 px-6 py-4 transition-all duration-300 " +
+                (showCompare
+                  ? "border-ink bg-ink text-paper"
+                  : "border-ink/15 bg-white text-ink hover:border-navy hover:bg-navy/5")
+              }
+            >
+              <span className="text-left">
+                <span className="block font-head text-sm font-bold uppercase tracking-widest">
+                  {showCompare
+                    ? section.compareCloseLabel
+                    : section.compareOpenLabel}
+                </span>
+                <span
+                  className={
+                    "mt-0.5 block font-body text-xs " +
+                    (showCompare ? "text-paper/60" : "text-ink/50")
+                  }
+                >
+                  {showCompare
+                    ? section.compareCloseSub
+                    : section.compareOpenSub}
+                </span>
               </span>
               <span
                 className={
-                  "mt-0.5 block font-body text-xs " +
-                  (showCompare ? "text-paper/60" : "text-ink/50")
+                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 " +
+                  (showCompare
+                    ? "border-paper/30"
+                    : "border-ink/15 group-hover:border-navy group-hover:bg-navy group-hover:text-paper")
                 }
               >
-                {showCompare
-                  ? "Collapse the table below"
-                  : "See every tier side by side"}
+                <CaretDown
+                  size={16}
+                  weight="bold"
+                  className={
+                    "transition-transform duration-300 " +
+                    (showCompare ? "rotate-180" : "")
+                  }
+                />
               </span>
-            </span>
-            <span
-              className={
-                "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300 " +
-                (showCompare
-                  ? "border-paper/30"
-                  : "border-ink/15 group-hover:border-navy group-hover:bg-navy group-hover:text-paper")
-              }
-            >
-              <CaretDown
-                size={16}
-                weight="bold"
-                className={
-                  "transition-transform duration-300 " +
-                  (showCompare ? "rotate-180" : "")
-                }
-              />
-            </span>
-          </button>
+            </button>
 
-          <div
-            ref={compareWrapRef}
-            className="overflow-hidden"
-            style={{ height: 0 }}
-          >
             <div
-              ref={compareInnerRef}
-              className="mt-6 overflow-x-auto rounded-2xl border border-ink/10 bg-white"
+              ref={compareWrapRef}
+              className="overflow-hidden"
+              style={{ height: 0 }}
             >
-              <table className="w-full min-w-[560px] border-collapse">
-                <thead>
-                  <tr className="border-b border-ink/10">
-                    <th className="sticky left-0 z-10 bg-white p-4 text-left font-head text-xs font-bold uppercase tracking-widest text-grey">
-                      {" "}
-                    </th>
-                    {TIERS.map((tier, i) => (
-                      <th
-                        key={tier.name}
-                        className={
-                          "p-4 text-left font-head text-xs font-bold uppercase tracking-widest " +
-                          (i === RECOMMENDED_INDEX
-                            ? "bg-navy/5 text-navy"
-                            : "text-ink")
-                        }
-                      >
-                        {tier.name}
+              <div
+                ref={compareInnerRef}
+                className="mt-6 overflow-x-auto rounded-2xl border border-ink/10 bg-white"
+              >
+                <table className="w-full min-w-[560px] border-collapse">
+                  <thead>
+                    <tr className="border-b border-ink/10">
+                      <th className="sticky left-0 z-10 bg-white p-4 text-left font-head text-xs font-bold uppercase tracking-widest text-grey">
+                        {" "}
                       </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {COMPARE_GROUPS.map((group) => (
-                    <Fragment key={group.title}>
-                      <tr className="border-b border-ink/5">
-                        <td
-                          colSpan={4}
-                          className="sticky left-0 bg-ink/[0.03] p-3 font-head text-[11px] font-bold uppercase tracking-widest text-ink/50"
+                      {tiers.map((tier, i) => (
+                        <th
+                          key={tier.id}
+                          className={
+                            "p-4 text-left font-head text-xs font-bold uppercase tracking-widest " +
+                            (i === recommendedIndex
+                              ? "bg-navy/5 text-navy"
+                              : "text-ink")
+                          }
                         >
-                          {group.title}
-                        </td>
-                      </tr>
-                      {group.rows.map((row) => (
-                        <tr
-                          key={row.label}
-                          className="border-b border-ink/5 last:border-0"
-                        >
-                          <td className="sticky left-0 z-10 bg-white p-4 font-body text-sm text-ink/70">
-                            {row.label}
+                          {tier.name}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {compareGroups.map((group) => (
+                      <Fragment key={group.id}>
+                        <tr className="border-b border-ink/5">
+                          <td
+                            colSpan={tiers.length + 1}
+                            className="sticky left-0 bg-ink/[0.03] p-3 font-head text-[11px] font-bold uppercase tracking-widest text-ink/50"
+                          >
+                            {group.title}
                           </td>
-                          {row.values.map((val, i) => (
-                            <td
-                              key={i}
-                              className={
-                                "p-4 font-body text-sm text-ink " +
-                                (i === RECOMMENDED_INDEX ? "bg-navy/5" : "")
-                              }
-                            >
-                              {typeof val === "boolean" ? (
-                                val ? (
+                        </tr>
+                        {group.rows.map((row) => (
+                          <tr
+                            key={row.id}
+                            className="border-b border-ink/5 last:border-0"
+                          >
+                            <td className="sticky left-0 z-10 bg-white p-4 font-body text-sm text-ink/70">
+                              {row.label}
+                            </td>
+                            {row.cells.map((cell, i) => (
+                              <td
+                                key={`${row.id}-${i}`}
+                                className={
+                                  "p-4 font-body text-sm text-ink " +
+                                  (i === recommendedIndex ? "bg-navy/5" : "")
+                                }
+                              >
+                                {cell.kind === "YES" ? (
                                   <Check
                                     size={16}
                                     weight="bold"
                                     className="text-navy"
                                   />
-                                ) : (
+                                ) : cell.kind === "NO" ? (
                                   <span className="text-ink/25">-</span>
-                                )
-                              ) : (
-                                val
-                              )}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </Fragment>
-                  ))}
-                </tbody>
-              </table>
+                                ) : (
+                                  cell.text
+                                )}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
 
         {/* In-person coaching */}
         <div
@@ -694,21 +590,22 @@ export default function Services() {
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="md:max-w-sm">
               <p className="font-head text-sm font-bold uppercase tracking-widest text-grey">
-                In-Person - 1:1 &amp; Small Group
+                {section.inPersonTitle}
               </p>
               <p className="mt-3 font-body text-lg leading-relaxed text-ink/75">
-                Skills, speed, movement quality, strength and conditioning -
-                tailored to your goals.
+                {section.inPersonDescription}
               </p>
-              <p className="mt-2 font-body text-sm text-ink/50">
-                Groups of 4+.
-              </p>
+              {section.inPersonNote ? (
+                <p className="mt-2 font-body text-sm text-ink/50">
+                  {section.inPersonNote}
+                </p>
+              ) : null}
 
               <a
-                href="#contact"
+                href={section.inPersonCtaHref}
                 className="group mt-5 inline-flex items-center gap-2 rounded-full border border-ink px-5 py-2.5 font-head text-sm font-bold uppercase tracking-wide text-ink transition-all duration-300 hover:bg-ink hover:text-paper"
               >
-                Enquire directly
+                {section.inPersonCtaLabel}
                 <ArrowRight
                   size={14}
                   weight="bold"
@@ -718,16 +615,16 @@ export default function Services() {
             </div>
 
             <div className="grid grid-cols-3 gap-3 md:gap-4">
-              {IN_PERSON.map((option) => (
+              {inPerson.map((option) => (
                 <div
-                  key={option.label}
+                  key={option.id}
                   className="flex flex-col items-center rounded-xl border border-ink/10 px-4 py-5 text-center transition-colors duration-300 hover:border-navy/40 md:px-6"
                 >
                   <span className="font-head text-2xl font-bold text-ink md:text-3xl">
                     {"$" + option.price}
                   </span>
                   <span className="mt-1 font-body text-xs text-ink/50">
-                    per hour
+                    {option.unit}
                   </span>
                   <span className="mt-3 font-head text-[11px] font-bold uppercase tracking-widest text-grey">
                     {option.label}

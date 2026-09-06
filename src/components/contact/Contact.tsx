@@ -24,10 +24,12 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
+    setErrorMessage(null);
 
     const form = e.currentTarget;
     const data = {
@@ -37,6 +39,7 @@ export default function ContactForm() {
       role,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement)
         .value,
+      company: (form.elements.namedItem("company") as HTMLInputElement).value,
     };
 
     try {
@@ -45,11 +48,17 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) {
+        const payload = await res.json().catch(() => null);
+        setErrorMessage(payload?.error ?? null);
+        setStatus("error");
+        return;
+      }
       setStatus("sent");
       form.reset();
       setRole("");
     } catch {
+      setErrorMessage(null);
       setStatus("error");
     }
   }
@@ -137,6 +146,19 @@ export default function ContactForm() {
             </div>
           </fieldset>
 
+          {/* Honeypot - hidden from real users, filled in by bots. */}
+          <div aria-hidden className="hidden">
+            <label htmlFor="company">Company</label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+            />
+          </div>
+
           <FormField id="name" label="Full name" type="text" required />
           <FormField id="email" label="Email address" type="email" required />
           <FormField id="phone" label="Phone / WhatsApp" type="tel" />
@@ -174,7 +196,7 @@ export default function ContactForm() {
             )}
             {status === "error" && (
               <p className="font-body text-sm text-navy">
-                Something went wrong. Try WhatsApp instead?
+                {errorMessage ?? "Something went wrong. Try WhatsApp instead?"}
               </p>
             )}
           </div>

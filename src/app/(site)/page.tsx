@@ -11,24 +11,42 @@ import Contact from "@/components/contact/Contact";
 import InstagramFeed from "@/components/instagram/InstagramFeed";
 import CTABand from "@/components/cta/CTABand";
 
-export default function Home() {
+import {
+  getGuidesData,
+  getServicesData,
+  getSkillsData,
+  getTestimonialsData,
+} from "@/lib/content";
+
+// Rendered statically and refreshed hourly. Admin edits call revalidatePath
+// so changes appear on the next request rather than waiting this out.
+export const revalidate = 3600;
+
+export default async function Home() {
+  const [services, guides, testimonials, skills] = await Promise.all([
+    getServicesData(),
+    getGuidesData(),
+    // Only pinned testimonials appear in the home page marquee.
+    getTestimonialsData(true),
+    getSkillsData(),
+  ]);
+
   return (
     <main>
       <Navbar />
       <Hero />
       <About />
       <LogoStrip />
-      <Services />
-      <ProgrammeGuides />
-      
-      <Testimonials />
-      
+      <Services data={services} />
+      <ProgrammeGuides data={guides} />
 
-      <Skills />
+      <Testimonials data={testimonials} />
+
+      <Skills data={skills} />
       <InstagramFeed />
       <FAQ />
       <CTABand />
-    
+
       <Contact />
     </main>
   );

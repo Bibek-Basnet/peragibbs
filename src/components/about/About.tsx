@@ -126,7 +126,7 @@ export default function About() {
             ref={headingRef}
             className="font-head text-4xl font-semibold uppercase leading-[1.05] tracking-tightest text-navy md:text-5xl"
           >
-            Kia ora, I'm Pera.
+            Kia ora, I&apos;m Pera.
           </h2>
 
           <p
@@ -141,12 +141,12 @@ export default function About() {
             New Zealand has produced.
             <br />
             <br />
-            Health and fitness isn't just my profession - it's fundamental to
+            Health and fitness isn&apos;t just my profession - it&apos;s fundamental to
             how I live. Injury unfortunately ended my own rugby playing journey
-            early, but it strengthened my passion to apply what I've learned to
+            early, but it strengthened my passion to apply what I&apos;ve learned to
             every athlete and team I work with. I try to lead by example in
             everything I do - applying the same training and science on myself,
-            so I understand exactly what I'm asking of my athletes.
+            so I understand exactly what I&apos;m asking of my athletes.
             <br />
             <br />
             These days, my focus is youth development - building the physical
