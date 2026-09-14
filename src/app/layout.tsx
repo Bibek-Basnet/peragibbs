@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Open_Sans, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const lemonMilk = localFont({
@@ -150,6 +151,7 @@ export default function RootLayout({
       </head>
       <body className="bg-ink text-paper font-body antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   );
