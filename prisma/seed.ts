@@ -1,12 +1,20 @@
 /**
- * Seeds the database with the content that used to be hard-coded in the
- * components, plus the first admin user.
+ * Loads the starting content for a fresh database, plus the first admin user.
  *
- * Safe to re-run: every write is an upsert keyed on a stable slug/id, so
- * edits made in the admin panel to rows you have since changed will be
- * overwritten, but nothing is duplicated.
+ * Two modes:
  *
- * Run with: npm run db:seed
+ *   npm run db:seed          FILL  - the default, and the only one that is
+ *                                    safe against production. It creates what
+ *                                    is missing and never touches a row that
+ *                                    already exists, so admin edits survive.
+ *
+ *   npm run db:seed:reset    RESET - throws the seeded sections away and
+ *                                    rebuilds them from this file. For local
+ *                                    development. Refuses to run when
+ *                                    NODE_ENV=production unless --force is
+ *                                    also passed.
+ *
+ * Neither mode ever deletes leads or contact messages.
  */
 import path from "node:path";
 import { PrismaClient, TierTreatment, CompareCellKind } from "@prisma/client";
@@ -27,6 +35,34 @@ if (!connectionString) {
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString }),
 });
+
+const args = process.argv.slice(2);
+const RESET = args.includes("--reset");
+const FORCE = args.includes("--force");
+
+if (RESET && process.env.NODE_ENV === "production" && !FORCE) {
+  throw new Error(
+    "Refusing to run a reset seed with NODE_ENV=production. This deletes the " +
+      "offerings, skills, steps and comparison table, including anything edited " +
+      "in the admin panel. Use `npm run db:seed` to fill in only what is " +
+      "missing, or pass --force if you genuinely mean to wipe them.",
+  );
+}
+
+/** Human label for the log line at the end of each section. */
+const mode = RESET ? "reset" : "fill";
+
+const COUNTERS = {
+  serviceStep: () => prisma.serviceStep.count(),
+  compareGroup: () => prisma.compareGroup.count(),
+  inPersonOption: () => prisma.inPersonOption.count(),
+  skill: () => prisma.skill.count(),
+} as const;
+
+/** True when a section has no rows, so filling it cannot overwrite anything. */
+async function isEmpty(model: keyof typeof COUNTERS) {
+  return (await COUNTERS[model]()) === 0;
+}
 
 // ---------------------------------------------------------------------------
 
@@ -52,13 +88,18 @@ async function seedAdmin() {
     throw new Error("ADMIN_PASSWORD must be at least 10 characters.");
   }
 
+  const existingUser = await prisma.adminUser.findUnique({ where: { email } });
+
+  if (existingUser) {
+    // Re-seeding must never silently change a live password. Rotate it
+    // deliberately with `npm run admin:password`.
+    console.log(`- admin: ${email} already exists, password left unchanged`);
+    return;
+  }
+
   const passwordHash = await bcrypt.hash(password, 12);
-  await prisma.adminUser.upsert({
-    where: { email },
-    update: { passwordHash, name, isActive: true },
-    create: { email, passwordHash, name },
-  });
-  console.log(`- admin: ${email}`);
+  await prisma.adminUser.create({ data: { email, passwordHash, name } });
+  console.log(`- admin: created ${email}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -204,23 +245,26 @@ async function seedOfferings() {
 
   const tierIds: string[] = [];
   for (const tier of TIERS) {
+    // In fill mode an existing tier is left exactly as the admin left it.
     const saved = await prisma.coachingTier.upsert({
       where: { slug: tier.slug },
-      update: {
-        name: tier.name,
-        price: tier.price,
-        fee: tier.fee,
-        tagline: tier.tagline,
-        features: tier.features,
-        bestFor: tier.bestFor,
-        treatment: tier.treatment,
-        badge: tier.badge,
-        spotsLeft: tier.spotsLeft,
-        isRecommended: tier.isRecommended,
-        ctaHref: APPLY_URL,
-        sortOrder: tier.sortOrder,
-        isActive: true,
-      },
+      update: RESET
+        ? {
+            name: tier.name,
+            price: tier.price,
+            fee: tier.fee,
+            tagline: tier.tagline,
+            features: tier.features,
+            bestFor: tier.bestFor,
+            treatment: tier.treatment,
+            badge: tier.badge,
+            spotsLeft: tier.spotsLeft,
+            isRecommended: tier.isRecommended,
+            ctaHref: APPLY_URL,
+            sortOrder: tier.sortOrder,
+            isActive: true,
+          }
+        : {},
       create: {
         slug: tier.slug,
         name: tier.name,
@@ -239,44 +283,55 @@ async function seedOfferings() {
     });
     tierIds.push(saved.id);
   }
-  console.log(`- offerings: ${tierIds.length} tiers`);
+  console.log(`- offerings: ${tierIds.length} tiers (${mode})`);
 
-  await prisma.serviceStep.deleteMany({});
-  await prisma.serviceStep.createMany({
-    data: STEPS.map((step, i) => ({ ...step, sortOrder: i })),
-  });
-  console.log(`- offerings: ${STEPS.length} steps`);
-
-  // Rebuild the comparison table from scratch; cells cascade with the rows.
-  await prisma.compareGroup.deleteMany({});
-  for (const [gi, group] of COMPARE_GROUPS.entries()) {
-    const savedGroup = await prisma.compareGroup.create({
-      data: { title: group.title, sortOrder: gi },
+  if (RESET) await prisma.serviceStep.deleteMany({});
+  if (await isEmpty("serviceStep")) {
+    await prisma.serviceStep.createMany({
+      data: STEPS.map((step, i) => ({ ...step, sortOrder: i })),
     });
-    for (const [ri, row] of group.rows.entries()) {
-      await prisma.compareRow.create({
-        data: {
-          groupId: savedGroup.id,
-          label: row.label,
-          sortOrder: ri,
-          cells: {
-            create: row.cells.map((cell, ci) => ({
-              tierId: tierIds[ci],
-              kind: cell.kind,
-              text: cell.text ?? null,
-            })),
-          },
-        },
-      });
-    }
+    console.log(`- offerings: ${STEPS.length} steps`);
+  } else {
+    console.log("- offerings: steps already present, left alone");
   }
-  console.log(`- offerings: ${COMPARE_GROUPS.length} comparison groups`);
 
-  await prisma.inPersonOption.deleteMany({});
-  await prisma.inPersonOption.createMany({
-    data: IN_PERSON.map((option, i) => ({ ...option, sortOrder: i })),
-  });
-  console.log(`- offerings: ${IN_PERSON.length} in-person options`);
+  if (RESET) await prisma.compareGroup.deleteMany({});
+  if (await isEmpty("compareGroup")) {
+    for (const [gi, group] of COMPARE_GROUPS.entries()) {
+      const savedGroup = await prisma.compareGroup.create({
+        data: { title: group.title, sortOrder: gi },
+      });
+      for (const [ri, row] of group.rows.entries()) {
+        await prisma.compareRow.create({
+          data: {
+            groupId: savedGroup.id,
+            label: row.label,
+            sortOrder: ri,
+            cells: {
+              create: row.cells.map((cell, ci) => ({
+                tierId: tierIds[ci],
+                kind: cell.kind,
+                text: cell.text ?? null,
+              })),
+            },
+          },
+        });
+      }
+    }
+    console.log(`- offerings: ${COMPARE_GROUPS.length} comparison groups`);
+  } else {
+    console.log("- offerings: comparison table already present, left alone");
+  }
+
+  if (RESET) await prisma.inPersonOption.deleteMany({});
+  if (await isEmpty("inPersonOption")) {
+    await prisma.inPersonOption.createMany({
+      data: IN_PERSON.map((option, i) => ({ ...option, sortOrder: i })),
+    });
+    console.log(`- offerings: ${IN_PERSON.length} in-person options`);
+  } else {
+    console.log("- offerings: in-person rates already present, left alone");
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -430,7 +485,12 @@ async function seedSkills() {
     create: { id: "singleton" },
   });
 
-  await prisma.skill.deleteMany({});
+  if (RESET) await prisma.skill.deleteMany({});
+  if (!(await isEmpty("skill"))) {
+    console.log("- skills: already present, left alone");
+    return;
+  }
+
   for (const [i, skill] of SKILLS.entries()) {
     await prisma.skill.create({
       data: {
@@ -504,9 +564,11 @@ async function seedTestimonials() {
     create: { id: "singleton" },
   });
 
+  if (RESET) await prisma.testimonial.deleteMany({});
+
   const existing = await prisma.testimonial.count();
   if (existing > 0) {
-    console.log(`- testimonials: ${existing} already present, skipping`);
+    console.log(`- testimonials: ${existing} already present, left alone`);
     return;
   }
 
@@ -557,9 +619,10 @@ async function seedGuides() {
   });
 
   for (const guide of GUIDES) {
+    // Fill mode must not clobber an uploaded PDF or cover image.
     await prisma.guide.upsert({
       where: { slug: guide.slug },
-      update: guide,
+      update: RESET ? guide : {},
       create: guide,
     });
   }
@@ -569,13 +632,18 @@ async function seedGuides() {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  console.log("Seeding Pera Gibbs Movement content...");
+  const target = new URL(connectionString!).host;
+  console.log(
+    RESET
+      ? `Seeding (RESET - seeded sections will be rebuilt) against ${target}...`
+      : `Seeding (fill - existing rows are left alone) against ${target}...`,
+  );
   await seedAdmin();
   await seedOfferings();
   await seedSkills();
   await seedTestimonials();
   await seedGuides();
-  console.log("Done.");
+  console.log(`Done (${mode} mode).`);
 }
 
 main()

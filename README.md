@@ -167,13 +167,74 @@ message is written to the database **before** the email is attempted, so an
 email outage never loses an enquiry. Failed sends show in
 `/admin/messages` with a retry button.
 
+## Seeding, and what production needs
+
+The seed has two modes, and only one of them is safe against a live database.
+
+| Command | Mode | Behaviour |
+| --- | --- | --- |
+| `npm run db:seed` | fill | Creates only what is missing. Never deletes, never overwrites an existing row. Safe to re-run against production. |
+| `npm run db:seed:reset` | reset | Deletes the seeded sections and rebuilds them from the seed file. Local development only. Refuses to run when `NODE_ENV=production` unless `--force` is passed. |
+
+Fill mode leaves a section alone as soon as it has any rows, so tiers, steps,
+the comparison table, skills, testimonials and guides all keep whatever the
+client edited. It never touches leads or contact messages.
+
+Re-seeding also never changes an existing admin password. Manage logins
+explicitly instead:
+
+```bash
+npm run admin:list       # who can sign in
+npm run admin:create     # create a user from ADMIN_EMAIL / ADMIN_PASSWORD
+npm run admin:password   # rotate an existing user's password
+```
+
+### Pointing a command at production
+
+An inline variable beats `.env`, so target production per command without
+editing anything:
+
+```bash
+DATABASE_URL="$PROD_DATABASE_URL" npx prisma migrate deploy
+DATABASE_URL="$PROD_DATABASE_URL" npx prisma db seed
+```
+
+On Neon, run **migrations** against the direct endpoint by dropping `-pooler`
+from the host. The pooled endpoint is PgBouncer, which does not reliably
+support the locks and DDL that migrations need. The running app should use the
+pooled URL.
+
+### Release checklist
+
+1. `DATABASE_URL="<direct url>" npx prisma migrate deploy`
+2. `DATABASE_URL="<pooled url>" npx prisma db seed` (only needed the first
+   time, but harmless afterwards)
+3. Deploy the app with the environment variables below.
+
 ## Deployment notes
 
-- Set every variable from `.env.example` in the hosting environment.
-- Run `npm run db:deploy` as part of the release, before the new build serves
-  traffic.
-- `CONTACT_FROM_EMAIL` must be on a domain verified in Resend, otherwise
-  delivery fails.
-- The in-memory rate limiter and login throttle are per process. On a
-  multi-instance deployment, back them with Redis. The call sites in
-  `src/lib/rate-limit.ts` and `src/lib/auth.ts` are the only places to change.
+Set these in the hosting environment:
+
+| Variable | Notes |
+| --- | --- |
+| `DATABASE_URL` | The **pooled** connection string for the app at runtime. |
+| `AUTH_SECRET` | 32+ random characters. Use a different value from development. |
+| `RESEND_API_KEY` | From resend.com. |
+| `CONTACT_FROM_EMAIL` | Must be on a domain verified in Resend, or delivery fails. |
+| `CONTACT_TO_EMAIL` | Where enquiry notifications go. |
+| `CONTACT_AUTOREPLY` | `true`, or `false` to stop the visitor acknowledgement. |
+
+`ADMIN_EMAIL`, `ADMIN_PASSWORD` and `ADMIN_NAME` are only needed when you run
+the seed or the admin scripts. The app itself does not read them, so they do
+not need to live in the hosting environment.
+
+> **File uploads need a persistent disk.** Admin uploads are written to
+> `public/uploads/`. That works on a VPS, Render, Railway, Fly or a container.
+> On Vercel and similar serverless hosts the filesystem is read-only and
+> ephemeral, so uploads will fail or vanish on the next deploy. If you deploy
+> there, replace `src/lib/uploads.ts` with object storage (S3, Cloudflare R2 or
+> Vercel Blob). Nothing else changes.
+
+The in-memory rate limiter and login throttle are per process. On a
+multi-instance deployment, back them with Redis. The call sites in
+`src/lib/rate-limit.ts` and `src/lib/auth.ts` are the only places to change.

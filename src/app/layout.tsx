@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Open_Sans, Inter } from "next/font/google";
 import "./globals.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 const lemonMilk = localFont({
   src: [
     { path: "../fonts/LEMONMILK-Light.otf", weight: "300", style: "normal" },
@@ -150,6 +151,7 @@ export default function RootLayout({
       </head>
       <body className="bg-ink text-paper font-body antialiased">
         {children}
+        <GoogleAnalytics gaId="G-1QVCFKFTY8" />
       </body>
     </html>
   );

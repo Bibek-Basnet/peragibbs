@@ -13,11 +13,17 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
+    "db:seed:reset": "tsx prisma/seed.ts --reset",
     "db:studio": "prisma studio",
-    "db:setup": "prisma migrate dev --name init && prisma db seed"
+    "db:setup": "prisma migrate dev --name init && prisma db seed",
+    "deploy:db": "prisma migrate deploy && prisma db seed",
+    "admin:list": "tsx scripts/admin-user.ts list",
+    "admin:create": "tsx scripts/admin-user.ts create",
+    "admin:password": "tsx scripts/admin-user.ts password"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@next/third-parties": "^16.3.5",
     "@phosphor-icons/react": "^2.1.10",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
